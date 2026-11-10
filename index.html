@@ -546,7 +546,7 @@ function safeId(s){return String(s).replace(/[^A-Za-z0-9_\-]/g,"-").slice(0,80);
 const SB_URL="https://sajfvtupdqymkdwsimcz.supabase.co";
 const SB_KEY="sb_publishable_-d6qefyvuDNEAu8ZlExrVA_n-ZHRfxw";
 const FAMILY_EMAIL="thailand-family@cherryward.co";
-const ALL_PEOPLE = PEOPLE.flatMap(g=>g.members.map(([id,name])=>({id,name})));
+const ALL_PEOPLE = PEOPLE.flatMap(g=>g.members.map(([id,name])=>({id,name,short:id==="tintin"?"Tin Tin":name.split(" ")[0]})));
 const state = {
   canWrite:true, online:false,
   me:lsGet("trip.me",null),            // {id,name}
@@ -840,7 +840,7 @@ function showLogin(){ $("#gate").hidden=false; $("#gate-login").hidden=false; $(
 function showPicker(){
   $("#gate").hidden=false; $("#gate-login").hidden=true; $("#gate-pick").hidden=false;
   const g=$("#pick-grid"); g.textContent="";
-  ALL_PEOPLE.forEach(p=>{ const b=el("button",{type:"button",class:"pick",text:p.name.split(" ")[0]}); b.addEventListener("click",()=>{ state.me={id:p.id,name:p.name.split(" ")[0]}; lsSet("trip.me",state.me); $("#gate").hidden=true; applyRows(); renderAll(); setSync(); }); g.append(b); });
+  ALL_PEOPLE.forEach(p=>{ const b=el("button",{type:"button",class:"pick",text:p.short}); b.addEventListener("click",()=>{ state.me={id:p.id,name:p.short}; lsSet("trip.me",state.me); $("#gate").hidden=true; applyRows(); renderAll(); setSync(); }); g.append(b); });
 }
 async function logout(){ try{ await sb.auth.signOut(); }catch(e){} try{ localStorage.removeItem("trip.cache"); }catch(e){} rows.clear(); applyRows(); renderAll(); showLogin(); }
 $("#gate-login").addEventListener("submit", async e=>{
