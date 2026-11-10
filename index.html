@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thailand Family Trip 2026</title>
+<meta name="robots" content="noindex, nofollow">
+<script src="supabase.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: phone-first travel companion. Sticky header + bottom tab bar; one scrolling column per tab.
+   Each city has its own colour so you always know where you are. */
+:root{
+  --bg:#f3f5f4;
+  --surface:#ffffff;
+  --ink:#16201f;
+  --muted:#5b6a68;
+  --line:#dde4e2;
+  --accent:#d9861c;          /* marigold */
+  --accent-ink:#ffffff;
+  --brand:#0f4c4a;           /* deep teal */
+  --bkk:#c2711a; --bkk-soft:#fbefe0;
+  --hh:#1f7f9a;  --hh-soft:#e1f1f6;
+  --cm:#4c7a34;  --cm-soft:#e8f1e1;
+  --fly:#5a5f8c; --fly-soft:#ebecf6;
+  --good:#2f7d4f; --warn:#b4560f; --warn-soft:#fdeedd; --bad:#b3261e;
+  --display:"Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
+  --body:"Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --radius:14px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f1514; --surface:#18201f; --ink:#e9efed; --muted:#9aaba8; --line:#2a3533;
+    --accent:#f0a33d; --accent-ink:#1a1206; --brand:#7fd1c9;
+    --bkk:#f0a24e; --bkk-soft:#2c2214; --hh:#5cc0dc; --hh-soft:#132a31; --cm:#8fc56e; --cm-soft:#1a2716;
+    --fly:#a8acdc; --fly-soft:#1f2133; --good:#6cc493; --warn:#f2a25a; --warn-soft:#2d2015; --bad:#ff8a80;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f1514; --surface:#18201f; --ink:#e9efed; --muted:#9aaba8; --line:#2a3533;
+  --accent:#f0a33d; --accent-ink:#1a1206; --brand:#7fd1c9;
+  --bkk:#f0a24e; --bkk-soft:#2c2214; --hh:#5cc0dc; --hh-soft:#132a31; --cm:#8fc56e; --cm-soft:#1a2716;
+  --fly:#a8acdc; --fly-soft:#1f2133; --good:#6cc493; --warn:#f2a25a; --warn-soft:#2d2015; --bad:#ff8a80;
+  color-scheme: dark;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.45;-webkit-text-size-adjust:100%}
+a{color:var(--brand)}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0}
+.app{max-width:720px;margin:0 auto;min-height:100%;display:flex;flex-direction:column}
+
+/* Header */
+header.top{position:sticky;top:0;z-index:20;background:var(--brand);color:#fff;padding:12px 16px 10px}
+:root[data-theme="dark"] header.top{background:#123b39}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) header.top{background:#123b39}}
+.top-row{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.top h1{font-size:1.3rem;font-weight:800;letter-spacing:-.01em;color:#fff}
+.top .sub{font-size:.85rem;opacity:.85}
+.countdown{font-size:.85rem;background:rgba(255,255,255,.14);padding:3px 10px;border-radius:999px;white-space:nowrap}
+.sync{font-size:.75rem;opacity:.8;margin-top:4px}
+
+main{flex:1;padding:14px 16px 96px;display:flex;flex-direction:column;gap:14px}
+section.tab{display:none;flex-direction:column;gap:14px}
+section.tab.active{display:flex}
+
+/* Bottom nav */
+nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--surface);border-top:1px solid var(--line);
+  display:flex;justify-content:center;padding-bottom:env(safe-area-inset-bottom)}
+nav.tabs .inner{display:grid;grid-template-columns:repeat(4,1fr);width:100%;max-width:720px}
+nav.tabs button{background:none;border:0;padding:8px 4px 10px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:.78rem;color:var(--muted);cursor:pointer}
+nav.tabs button svg{width:24px;height:24px}
+nav.tabs button[aria-selected="true"]{color:var(--brand);font-weight:700}
+nav.tabs .badge{background:var(--accent);color:var(--accent-ink);font-size:.65rem;border-radius:999px;padding:0 6px;margin-left:2px}
+
+/* Day strip */
+.strip{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 6px;scrollbar-width:none;margin:0 -16px;padding-left:16px;padding-right:16px}
+.strip::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:6px 10px;text-align:center;min-width:58px;cursor:pointer}
+.chip .d{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.chip .n{font-family:var(--display);font-weight:800;font-size:1.15rem;line-height:1.1}
+.chip .c{font-size:.68rem;font-weight:600}
+.chip[data-city="bkk"] .c{color:var(--bkk)} .chip[data-city="hh"] .c{color:var(--hh)} .chip[data-city="cm"] .c{color:var(--cm)} .chip[data-city="fly"] .c{color:var(--fly)}
+.chip.sel{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.chip.today{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.chip.today .d,.chip.today .c{color:var(--accent-ink)}
+
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.8rem;color:var(--muted)}
+.legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px;background:var(--dot)}
+
+/* Day card */
+.day{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;scroll-margin-top:120px}
+.day-head{padding:14px 16px 12px;border-left:6px solid var(--cityc);background:var(--citysoft)}
+.day[data-city="bkk"]{--cityc:var(--bkk);--citysoft:var(--bkk-soft)}
+.day[data-city="hh"]{--cityc:var(--hh);--citysoft:var(--hh-soft)}
+.day[data-city="cm"]{--cityc:var(--cm);--citysoft:var(--cm-soft)}
+.day[data-city="fly"]{--cityc:var(--fly);--citysoft:var(--fly-soft)}
+.day-meta{display:flex;justify-content:space-between;gap:8px;font-size:.8rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.day-meta .city{color:var(--cityc)}
+.day h2{font-size:1.25rem;font-weight:800;margin-top:4px}
+.day .sleep{font-size:.85rem;color:var(--muted);margin-top:4px}
+.day .sleep b{color:var(--ink);font-weight:600}
+.today-flag{background:var(--accent);color:var(--accent-ink);border-radius:999px;padding:1px 8px;font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;margin-left:6px}
+ol.tl{list-style:none;margin:0;padding:6px 16px 4px}
+ol.tl li{display:grid;grid-template-columns:62px 1fr;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+ol.tl li:first-child{border-top:0}
+.t{font-variant-numeric:tabular-nums;font-weight:700;font-size:.85rem;color:var(--muted);padding-top:1px}
+.what b{display:block;font-weight:600}
+.what p{margin:2px 0 0;font-size:.9rem;color:var(--muted)}
+.what .links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:6px;font-size:.85rem}
+.pill{display:inline-block;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:1px 7px;border-radius:999px;margin-left:6px;vertical-align:2px}
+.pill.booked{background:color-mix(in srgb,var(--good) 16%,transparent);color:var(--good)}
+.pill.tobook{background:var(--warn-soft);color:var(--warn)}
+.pill.opt{background:color-mix(in srgb,var(--muted) 16%,transparent);color:var(--muted)}
+.pill.event{background:color-mix(in srgb,var(--accent) 22%,transparent);color:var(--warn)}
+.tip{margin:0 16px 12px;padding:10px 12px;border-radius:10px;background:var(--bg);font-size:.88rem}
+.tip b{font-weight:700}
+
+/* Notes */
+.notes{border-top:1px dashed var(--line);padding:10px 16px 14px}
+.notes h3{font-family:var(--body);font-size:.8rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:700;margin-bottom:6px}
+.note{display:flex;gap:8px;align-items:flex-start;font-size:.92rem;padding:6px 0}
+.note .who{font-size:.75rem;color:var(--muted)}
+.note button.x{margin-left:auto;background:none;border:0;color:var(--muted);cursor:pointer;font-size:1rem;padding:0 4px}
+form.add{display:flex;gap:8px;margin-top:6px}
+form.add input{flex:1;min-width:0;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:10px;padding:9px 10px;font:inherit;font-size:.92rem}
+form.add button{border:0;background:var(--brand);color:#fff;border-radius:10px;padding:0 14px;font-weight:600;cursor:pointer}
+:root[data-theme="dark"] form.add button{color:#0f1514}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) form.add button{color:#0f1514}}
+
+/* Generic cards */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px}
+.card h2{font-size:1.1rem;font-weight:800;margin-bottom:8px}
+.card h3{font-size:1rem;font-weight:700;font-family:var(--body)}
+.kicker{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.sectiontitle{font-size:1.35rem;font-weight:800;margin-top:6px}
+.lead{color:var(--muted);font-size:.92rem;margin:-6px 0 0}
+
+/* Flight card */
+.flight{display:grid;grid-template-columns:1fr auto 1fr;gap:6px;align-items:center;margin:8px 0}
+.flight .code{font-family:var(--display);font-weight:800;font-size:1.6rem;line-height:1}
+.flight .time{font-variant-numeric:tabular-nums;font-weight:700}
+.flight .place{font-size:.8rem;color:var(--muted)}
+.flight .mid{text-align:center;font-size:.75rem;color:var(--muted)}
+.flight .mid svg{width:44px;height:16px;display:block;margin:0 auto 2px;color:var(--fly)}
+.flight .r{text-align:right}
+dl.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:8px 0 0;font-size:.9rem}
+dl.kv dt{color:var(--muted)}
+dl.kv dd{margin:0;font-weight:500;overflow-wrap:anywhere}
+.ref{font-variant-numeric:tabular-nums;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9rem;background:var(--bg);padding:1px 6px;border-radius:6px}
+.copy{border:1px solid var(--line);background:none;border-radius:8px;font-size:.75rem;padding:1px 8px;cursor:pointer;margin-left:4px;color:var(--muted)}
+.seatgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px;font-size:.82rem}
+.seat{border:1px solid var(--line);border-radius:8px;padding:6px 8px}
+.seat b{font-variant-numeric:tabular-nums}
+.stay{border-left:5px solid var(--cityc)}
+.stay[data-city="bkk"]{--cityc:var(--bkk)} .stay[data-city="hh"]{--cityc:var(--hh)} .stay[data-city="cm"]{--cityc:var(--cm)}
+
+/* Alerts */
+.alert{border-radius:var(--radius);padding:12px 14px;background:var(--warn-soft);border:1px solid color-mix(in srgb,var(--warn) 35%,transparent)}
+.alert h3{font-family:var(--body);font-size:.95rem;font-weight:700;color:var(--warn);margin-bottom:4px}
+.alert ul{margin:4px 0 0;padding-left:18px;font-size:.9rem}
+.alert li{margin:3px 0}
+
+/* Checklists */
+.list{list-style:none;margin:0;padding:0}
+.list li{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-top:1px solid var(--line)}
+.list li:first-child{border-top:0}
+.check{appearance:none;-webkit-appearance:none;flex:0 0 24px;width:24px;height:24px;border:2px solid var(--muted);border-radius:7px;margin:1px 0 0;cursor:pointer;display:grid;place-items:center;background:var(--surface)}
+.check:checked{background:var(--good);border-color:var(--good)}
+.check:checked::after{content:"";width:6px;height:11px;border:solid #fff;border-width:0 3px 3px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.check:disabled{opacity:.5;cursor:default}
+.li-body{flex:1;min-width:0}
+.li-body .txt{font-weight:500}
+.li-body .sm{font-size:.82rem;color:var(--muted);margin-top:2px}
+.done .txt{text-decoration:line-through;color:var(--muted)}
+.due{font-size:.72rem;font-weight:700;color:var(--warn);text-transform:uppercase;letter-spacing:.03em}
+.progress{height:8px;background:var(--bg);border-radius:999px;overflow:hidden;margin:6px 0 2px}
+.progress i{display:block;height:100%;background:var(--good);width:0;transition:width .3s}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.seg button{border:0;background:var(--surface);padding:7px 14px;font-size:.88rem;cursor:pointer;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--brand);color:#fff;font-weight:600}
+:root[data-theme="dark"] .seg button[aria-pressed="true"]{color:#0f1514}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .seg button[aria-pressed="true"]{color:#0f1514}}
+
+/* People */
+.group{display:flex;flex-direction:column;gap:2px}
+.person{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}
+.person:first-of-type{border-top:0}
+.person .nm{font-weight:600}
+.person .age{font-size:.8rem;color:var(--muted)}
+.person input{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:8px;padding:6px 8px;font:inherit;font-size:.88rem;width:150px}
+.emerg{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.emerg .e{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--surface)}
+.emerg .num{font-family:var(--display);font-weight:800;font-size:1.5rem;color:var(--bad);font-variant-numeric:tabular-nums}
+.emerg .lbl{font-size:.82rem;color:var(--muted)}
+ul.plain{margin:6px 0 0;padding-left:18px;font-size:.92rem}
+ul.plain li{margin:4px 0}
+.small{font-size:.82rem;color:var(--muted)}
+.toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:8px 14px;border-radius:999px;font-size:.85rem;opacity:0;pointer-events:none;transition:opacity .2s;z-index:40}
+.toast.show{opacity:1}
+.gate{position:fixed;inset:0;z-index:50;background:var(--brand);display:grid;place-items:center;padding:20px}
+.gate[hidden]{display:none}
+.gate-card{background:var(--surface);border-radius:20px;padding:22px 20px;width:100%;max-width:380px}
+.gate-card input{width:100%;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:12px;padding:14px;font:inherit;font-size:1.1rem}
+.bigbtn{width:100%;margin-top:12px;border:0;border-radius:12px;padding:14px;font-size:1.05rem;font-weight:700;background:var(--accent);color:var(--accent-ink);cursor:pointer}
+.bigbtn:disabled{opacity:.6}
+.pickgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pick{border:1px solid var(--line);background:var(--bg);border-radius:12px;padding:14px 6px;font-weight:600;font-size:1rem;cursor:pointer}
+.pick:hover{border-color:var(--accent)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;scroll-behavior:auto!important}}
+@media (min-width:560px){.seatgrid{grid-template-columns:repeat(3,1fr)}.emerg{grid-template-columns:repeat(4,1fr)}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="top-row">
+      <h1>Thailand 2026</h1>
+      <span class="countdown" id="countdown">21 Nov – 6 Dec</span>
+    </div>
+    <div class="sub">Wards · Aung–Abadianos · Than &amp; Tin Tin · 9 travellers</div>
+    <div class="sync" id="sync">Connecting…</div>
+  </header>
+
+  <main>
+    <!-- PLAN -->
+    <section class="tab active" id="tab-plan" aria-labelledby="nav-plan">
+      <div class="strip" id="strip" role="list"></div>
+      <div class="legend">
+        <span style="--dot:var(--bkk)">Bangkok</span>
+        <span style="--dot:var(--hh)">Hua Hin</span>
+        <span style="--dot:var(--cm)">Chiang Mai</span>
+        <span style="--dot:var(--fly)">Travel day</span>
+      </div>
+      <div id="days" style="display:flex;flex-direction:column;gap:14px"></div>
+    </section>
+
+    <!-- TRAVEL -->
+    <section class="tab" id="tab-travel" aria-labelledby="nav-travel">
+      <h2 class="sectiontitle">Flights, hotels &amp; transfers</h2>
+      <div class="alert" id="gaps">
+        <h3>Not booked yet</h3>
+        <ul>
+          <li><b>Wed 25 Nov:</b> Bangkok → Hua Hin for 9 people (about 3–4 hours by van).</li>
+          <li><b>Sun 29 Nov:</b> Hilton → Hua Hin Airport, and Chiang Mai Airport → Mövenpick.</li>
+          <li><b>Sat 5 Dec:</b> Mövenpick → Chiang Mai Airport.</li>
+          <li><b>Airport van on 21 Nov:</b> booked for 9, but the van takes about 8 standard suitcases. Ask the operator about a bigger van or a second car.</li>
+        </ul>
+      </div>
+      <div id="travel"></div>
+    </section>
+
+    <!-- LISTS -->
+    <section class="tab" id="tab-lists" aria-labelledby="nav-lists">
+      <h2 class="sectiontitle">Lists</h2>
+      <div class="seg" role="group" aria-label="Choose list">
+        <button type="button" id="seg-todo" aria-pressed="true">Family to-dos</button>
+        <button type="button" id="seg-pack" aria-pressed="false">My packing</button>
+      </div>
+      <div class="card" id="todo-card">
+        <div class="kicker">Shared with everyone</div>
+        <div class="progress"><i id="todo-bar"></i></div>
+        <div class="small" id="todo-count"></div>
+        <ul class="list" id="todo-list"></ul>
+        <form class="add" id="todo-add" autocomplete="off">
+          <label for="todo-input" class="small" style="position:absolute;left:-9999px">New to-do</label>
+          <input id="todo-input" maxlength="140" placeholder="Add a to-do for the family">
+          <button type="submit">Add</button>
+        </form>
+      </div>
+      <div class="card" id="pack-card" hidden>
+        <div class="kicker">Your own list · ticks only show for you</div>
+        <div class="progress"><i id="pack-bar"></i></div>
+        <div class="small" id="pack-count"></div>
+        <ul class="list" id="pack-list"></ul>
+      </div>
+    </section>
+
+    <!-- INFO -->
+    <section class="tab" id="tab-info" aria-labelledby="nav-info">
+      <h2 class="sectiontitle">Contacts &amp; emergencies</h2>
+      <div class="card" id="me-box" style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"></div>
+      <div class="card">
+        <h2>Emergency numbers in Thailand</h2>
+        <div class="emerg">
+          <div class="e"><div class="num">1155</div><div class="lbl">Tourist Police (English)</div></div>
+          <div class="e"><div class="num">1669</div><div class="lbl">Ambulance</div></div>
+          <div class="e"><div class="num">191</div><div class="lbl">Police</div></div>
+          <div class="e"><div class="num">199</div><div class="lbl">Fire</div></div>
+        </div>
+        <dl class="kv" style="margin-top:12px">
+          <dt>Australian Embassy Bangkok</dt><dd>+66 2 344 6300 <span class="small">(option 1 after hours for the 24-hour Consular Emergency Centre)</span></dd>
+          <dt>DFAT 24-hour line</dt><dd>+61 2 6261 3305</dd>
+          <dt>Address</dt><dd>181 Wireless Road, Lumphini, Pathumwan, Bangkok</dd>
+        </dl>
+      </div>
+
+      <div class="card">
+        <h2>Our travellers</h2>
+        <p class="small" style="margin:-4px 0 8px">Add mobile numbers so everyone has them. Everyone in the family sees them.</p>
+        <div id="people"></div>
+      </div>
+
+      <div class="card">
+        <h2>Travel insurance</h2>
+        <p class="small" style="margin:-4px 0 8px">Add each group's insurer and emergency assistance number.</p>
+        <div id="insurance"></div>
+      </div>
+
+      <div class="card">
+        <h2>Good to know</h2>
+        <ul class="plain">
+          <li><b>Arrival card:</b> everyone needs a Thailand Digital Arrival Card (TDAC), done free at tdac.immigration.go.th in the 3 days before landing, so between 18 and 21 Nov. Use The Berkeley as the address.</li>
+          <li><b>Visa:</b> Australians get a free 30-day stay on arrival. Passports need 6+ months left.</li>
+          <li><b>Money:</b> Thai baht (THB). Cards work in hotels and malls; carry cash for markets, tuk-tuks and tips.</li>
+          <li><b>Power:</b> 220V. Bring adapters: Thai sockets take flat two-pin and round two-pin plugs, not the Australian angled pins.</li>
+          <li><b>Temples:</b> cover shoulders and knees, shoes off inside. The Grand Palace is strict.</li>
+          <li><b>Weather:</b> late Nov is cool season. Bangkok and Hua Hin around 31–33°C; Chiang Mai mornings can drop to 16–18°C and Doi Inthanon's summit is colder.</li>
+          <li><b>Getting around:</b> Grab (like Uber) works in all three cities and has larger cars. Agree a price before getting into a tuk-tuk.</li>
+          <li><b>Time:</b> Thailand is 3 hours behind Brisbane and 4 hours behind Sydney (daylight saving).</li>
+          <li><b>5 Dec</b> is a national public holiday (King Bhumibol's birthday, Father's Day). Some offices close; airports run as normal.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2>Hospitals near each hotel</h2>
+        <ul class="plain">
+          <li><a href="https://www.google.com/maps/search/?api=1&query=Bumrungrad+International+Hospital+Bangkok">Bumrungrad International Hospital</a>, Bangkok</li>
+          <li><a href="https://www.google.com/maps/search/?api=1&query=Bangkok+Hospital+Hua+Hin">Bangkok Hospital Hua Hin</a></li>
+          <li><a href="https://www.google.com/maps/search/?api=1&query=Chiang+Mai+Ram+Hospital">Chiang Mai Ram Hospital</a></li>
+        </ul>
+      </div>
+      <p class="small">Booking details come from the confirmation emails. Check anything critical against the original before you rely on it.</p>
+    </section>
+  </main>
+
+  <nav class="tabs" aria-label="Sections">
+    <div class="inner" role="tablist">
+      <button type="button" role="tab" id="nav-plan" aria-controls="tab-plan" aria-selected="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>Plan</button>
+      <button type="button" role="tab" id="nav-travel" aria-controls="tab-travel" aria-selected="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>Travel</button>
+      <button type="button" role="tab" id="nav-lists" aria-controls="tab-lists" aria-selected="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><path d="m3 6 1 1 2-2M3 12l1 1 2-2M3 18l1 1 2-2"/></svg><span>Lists<span class="badge" id="todo-badge" hidden></span></span></button>
+      <button type="button" role="tab" id="nav-info" aria-controls="tab-info" aria-selected="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>Contacts</button>
+    </div>
+  </nav>
+</div>
+<div class="gate" id="gate" hidden>
+  <div class="gate-card">
+    <div class="kicker" style="color:var(--accent)">21 Nov – 6 Dec 2026</div>
+    <h2 style="font-size:1.8rem;font-weight:800;margin:4px 0 6px">Thailand 2026</h2>
+    <form id="gate-login" autocomplete="on">
+      <label for="pw" style="display:block;font-weight:600;margin:10px 0 6px">Family password</label>
+      <input id="pw" name="password" type="password" autocomplete="current-password" required>
+      <button type="submit" id="login-btn" class="bigbtn">Open the trip</button>
+      <p class="small" id="login-err" role="alert" style="color:var(--bad);min-height:1.2em"></p>
+      <p class="small">Don't have it? Ask Cherry. You only need to do this once on each phone.</p>
+    </form>
+    <div id="gate-pick" hidden>
+      <p style="font-weight:600;margin:10px 0">Who's using this phone?</p>
+      <div class="pickgrid" id="pick-grid"></div>
+      <p class="small">This shows the family who ticked things off. You can change it later on the Contacts tab.</p>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ---------------- Trip data ---------------- */
+const MAP = q => "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(q);
+const HOTEL = {
+  bkk:{name:"The Berkeley Hotel Pratunam", map:MAP("The Berkeley Hotel Pratunam Bangkok")},
+  hh:{name:"Hilton Hua Hin Resort & Spa", map:MAP("Hilton Hua Hin Resort & Spa")},
+  cm:{name:"Mövenpick Suriwongse Chiang Mai", map:MAP("Movenpick Suriwongse Hotel Chiang Mai")}
+};
+// tag: booked | tobook | opt | event
+const DAYS = [
+ {date:"2026-11-21", city:"fly", place:"Sydney → Bangkok", title:"Arrive in Bangkok", sleep:"bkk", items:[
+   {t:"7:25", b:"Be at Sydney Airport, Terminal 1", p:"3 hours before is comfortable for 9 people. Qantas bag drop closes 60 minutes before departure."},
+   {t:"10:25", b:"QF23 Sydney → Bangkok", tag:"booked", p:"About 9 h 45 min. Airbus A330."},
+   {t:"16:10", b:"Land at Suvarnabhumi (BKK)", p:"Have passports and TDAC QR codes ready for immigration. After bags, leave by Exit B."},
+   {t:"~17:15", b:"Meet the van at Gate 3", tag:"booked", p:"Look for the KLOOK sign at the railings between Gates 3 and 4, opposite the information desk. Ujoyous Travel, +66 80 046 4688 (message them once you have your bags).", links:[["Booking ref on the Travel tab"]]},
+   {t:"~18:30", b:"Check in at The Berkeley", p:"Easy dinner close by. Pratunam's street food and the hotel restaurants are a short walk.", map:HOTEL.bkk.map}
+ ], tip:"First night: keep it short. Everyone has been up since early and the grandparents will want a rest."},
+
+ {date:"2026-11-22", city:"bkk", place:"Bangkok", title:"Chatuchak Weekend Market", sleep:"bkk", items:[
+   {t:"9:00", b:"Chatuchak Weekend Market", p:"Thousands of stalls, only open on weekends. Go early before the heat. Pick a meeting point (the clock tower) in case anyone gets separated.", map:MAP("Chatuchak Weekend Market")},
+   {t:"13:00", b:"Back to the hotel for lunch and the pool", p:"Midday rest, especially for Than and Tin Tin."},
+   {t:"17:30", b:"Asiatique The Riverfront", tag:"opt", p:"Riverside night market with a big Ferris wheel. Good for the kids; easy for everyone.", map:MAP("Asiatique The Riverfront Bangkok")}
+ ]},
+
+ {date:"2026-11-23", city:"bkk", place:"Bangkok", title:"Grand Palace & the river", sleep:"bkk", items:[
+   {t:"8:30", b:"Grand Palace & Wat Phra Kaew", p:"Opens 8:30. Strict dress code: shoulders and knees covered, no see-through clothes. Arrive at opening to beat the crowds and heat.", map:MAP("Grand Palace Bangkok")},
+   {t:"11:00", b:"Wat Pho (Reclining Buddha)", p:"A short walk south. Shady and calmer than the Palace."},
+   {t:"12:00", b:"Ferry across to Wat Arun", tag:"opt", p:"The cross-river ferry from Tha Tien pier takes a few minutes. Steep steps at Wat Arun, so the grandparents may prefer to watch from the bottom."},
+   {t:"14:00", b:"Rest at the hotel", p:""},
+   {t:"Evening", b:"Loy Krathong fair at Mahakan Fort", tag:"event", p:"Bangkok is running Loy Krathong events 23–25 Nov at Mahakan Fort, near the Golden Mount.", map:MAP("Mahakan Fort Bangkok")}
+ ]},
+
+ {date:"2026-11-24", city:"bkk", place:"Bangkok", title:"Loy Krathong night", sleep:"bkk", items:[
+   {t:"Morning", b:"SEA LIFE Bangkok Ocean World", tag:"opt", p:"Under Siam Paragon, about 15 minutes from the hotel. Air-conditioned and good for all ages.", map:MAP("SEA LIFE Bangkok Ocean World")},
+   {t:"Afternoon", b:"Rest and get ready", p:"Pick up krathongs (small floating baskets of banana leaf and flowers) from a street seller or make them together."},
+   {t:"18:30", b:"Float krathongs for Loy Krathong", tag:"event", p:"Tonight is the full moon festival. Lumpini Park's lake is the family-friendly choice: calmer than the riverside crowds, with paths for the grandparents. A river dinner cruise is the other option, but needs booking.", map:MAP("Lumpini Park Bangkok")}
+ ], tip:"<b>Pack tonight.</b> Tomorrow is a road day and The Berkeley checkout is 12:00."},
+
+ {date:"2026-11-25", city:"fly", place:"Bangkok → Hua Hin", title:"Road trip to the beach", sleep:"hh", items:[
+   {t:"Morning", b:"Breakfast and check out of The Berkeley", p:"Checkout before 12:00."},
+   {t:"~10:30", b:"Private van to Hua Hin", tag:"tobook", p:"About 3–4 hours depending on traffic. Book a van for 9 people plus luggage, or two cars."},
+   {t:"15:00", b:"Check in at the Hilton Hua Hin", p:"Twin Premium Ocean View. Breakfast included.", map:HOTEL.hh.map},
+   {t:"18:00", b:"Hua Hin Night Market", p:"A short walk from the Hilton. Seafood, snacks and souvenirs.", map:MAP("Hua Hin Night Market")}
+ ]},
+
+ {date:"2026-11-26", city:"hh", place:"Hua Hin", title:"Water park & pool day", sleep:"hh", items:[
+   {t:"10:00", b:"Vana Nava Water Jungle", tag:"opt", p:"Big water park: slides for Dylan, Naima and Ezra, lazy river for the adults.", map:MAP("Vana Nava Water Jungle Hua Hin")},
+   {t:"All day", b:"Or a slow day at the Hilton", p:"Beach, pool and spa. The Hilton booking includes 25% off hotel services, charged at checkout."},
+   {t:"Evening", b:"Seafood dinner on Naresdamri Road", p:"The street the Hilton is on, lined with restaurants on piers over the water."}
+ ]},
+
+ {date:"2026-11-27", city:"hh", place:"Hua Hin", title:"Khao Takiab & Cicada Market", sleep:"hh", items:[
+   {t:"9:00", b:"Hua Hin Railway Station", p:"Pretty royal-era station, 10 minutes from the hotel. Quick photo stop.", map:MAP("Hua Hin Railway Station")},
+   {t:"10:00", b:"Khao Takiab (Monkey Mountain)", tag:"opt", p:"Hilltop temple with views over the beach. The monkeys snatch food and sunglasses, so keep bags zipped.", map:MAP("Khao Takiab Hua Hin")},
+   {t:"Afternoon", b:"Beach and pool", p:""},
+   {t:"17:00", b:"Cicada Market + Tamarind Market", tag:"event", p:"Open-air art, craft and food markets, Fri–Sun from about 4pm. Live music; good for every age.", map:MAP("Cicada Market Hua Hin")}
+ ]},
+
+ {date:"2026-11-28", city:"hh", place:"Hua Hin", title:"Free day", sleep:"hh", items:[
+   {t:"Morning", b:"Sam Phan Nam Floating Market", tag:"opt", p:"Floating market with boat rides and snacks, about 20 minutes away.", map:MAP("Sam Phan Nam Floating Market Hua Hin")},
+   {t:"Afternoon", b:"Beach, spa or massage", p:"A good afternoon for Than and Tin Tin to have a massage at the Hilton spa (25% off)."},
+   {t:"Evening", b:"Group dinner", p:"Last night by the beach. Decide on the place in the notes below."}
+ ], tip:"<b>Weigh your bags tonight.</b> Tomorrow's AirAsia flight allows 20 kg checked + 7 kg carry-on each."},
+
+ {date:"2026-11-29", city:"fly", place:"Hua Hin → Chiang Mai", title:"Fly north", sleep:"cm", items:[
+   {t:"Morning", b:"Last swim, then pack", p:"Ask reception for a late checkout. Otherwise leave bags with the concierge."},
+   {t:"12:00", b:"Check out of the Hilton", p:""},
+   {t:"15:15", b:"Leave for Hua Hin Airport (HHQ)", tag:"tobook", p:"About 15 minutes away. Book a van for 9, or two Grab cars."},
+   {t:"17:15", b:"FD3901 Hua Hin → Chiang Mai", tag:"booked", p:"Thai AirAsia. Arrives 18:30. Meals pre-ordered (see Travel)."},
+   {t:"18:30", b:"Land at Chiang Mai, then to the hotel", tag:"tobook", p:"The airport is about 15 minutes from the Mövenpick. Pre-book a van or take two Grab XLs."},
+   {t:"~19:30", b:"Check in at the Mövenpick Suriwongse", p:"Daily breakfast. The Night Bazaar is right outside.", map:HOTEL.cm.map},
+   {t:"Late", b:"Sunday Walking Street", tag:"opt", p:"Chiang Mai's biggest market, every Sunday on Ratchadamnoen Road until about 10–11pm. Only if people still have energy.", map:MAP("Sunday Walking Street Chiang Mai")}
+ ]},
+
+ {date:"2026-11-30", city:"cm", place:"Chiang Mai", title:"Doi Suthep & the Old City", sleep:"cm", items:[
+   {t:"8:30", b:"Wat Phra That Doi Suthep", p:"The golden temple on the mountain, about 40 minutes by car. There are 306 steps up, or a small cable car for the grandparents. Dress modestly.", map:MAP("Wat Phra That Doi Suthep")},
+   {t:"12:00", b:"Lunch: khao soi", p:"Chiang Mai's famous curry noodle soup."},
+   {t:"14:30", b:"Old City temples", tag:"opt", p:"Wat Chedi Luang and Wat Phra Singh, close together. Tuk-tuk or songthaew (red truck) from the hotel.", map:MAP("Wat Chedi Luang Chiang Mai")},
+   {t:"Evening", b:"Chiang Mai Night Bazaar", p:"On the hotel's doorstep, open every night.", map:MAP("Chiang Mai Night Bazaar")}
+ ]},
+
+ {date:"2026-12-01", city:"cm", place:"Chiang Mai", title:"Elephant sanctuary", sleep:"cm", items:[
+   {t:"~8:00", b:"Ethical elephant sanctuary", tag:"tobook", p:"Feeding and watching rescued elephants. No riding. Elephant Nature Park is the best known and books out weeks ahead; most include hotel pickup and lunch. Ask about half-day options for the grandparents.", map:MAP("Elephant Nature Park Chiang Mai")},
+   {t:"Evening", b:"Quiet night", p:"Long day out. Dinner at or near the hotel."}
+ ], tip:"Wear clothes that can get muddy and bring a change of clothes and insect repellent."},
+
+ {date:"2026-12-02", city:"cm", place:"Chiang Mai", title:"Cooking class", sleep:"cm", items:[
+   {t:"Morning", b:"Slow start, pool time", p:""},
+   {t:"Afternoon", b:"Thai cooking class", tag:"tobook", p:"Many classes start with a market walk and run on a farm outside town. Every person cooks their own dishes, which works well for kids and grandparents."},
+   {t:"Evening", b:"Free", p:""}
+ ]},
+
+ {date:"2026-12-03", city:"cm", place:"Chiang Mai", title:"Doi Inthanon day trip", sleep:"cm", items:[
+   {t:"7:30", b:"Doi Inthanon National Park", tag:"tobook", p:"Thailand's highest mountain, about 1.5–2 hours each way by private van. Waterfalls, the twin royal pagodas and gardens. You can drive almost to every stop, so it works for the grandparents. It's cold at the top: bring jackets.", map:MAP("Doi Inthanon National Park")},
+   {t:"Evening", b:"Back for dinner", p:""}
+ ], tip:"If a long drive doesn't suit everyone, split up: the kids can do the Grand Canyon water park instead."},
+
+ {date:"2026-12-04", city:"cm", place:"Chiang Mai", title:"Last full day", sleep:"cm", items:[
+   {t:"Morning", b:"Art in Paradise or Baan Kang Wat", tag:"opt", p:"3D illusion art museum (kids love it) or a quiet artists' village with cafés.", map:MAP("Art in Paradise Chiang Mai")},
+   {t:"Afternoon", b:"Massage and packing", p:""},
+   {t:"18:00", b:"Chiang Mai Night Safari", tag:"opt", p:"Tram ride among the animals after dark. Easy for every age.", map:MAP("Chiang Mai Night Safari")},
+   {t:"Or 19:00", b:"Khantoke dinner", tag:"opt", p:"Traditional Northern Thai shared dinner with music and dancing. A nice farewell for the whole family."}
+ ], tip:"<b>Pack tonight.</b> Qantas allows more than AirAsia: check your own allowance on the Travel tab."},
+
+ {date:"2026-12-05", city:"fly", place:"Chiang Mai → Bangkok → Sydney", title:"Fly home", sleep:null, items:[
+   {t:"Morning", b:"Breakfast and check out", p:"Confirm the checkout time with the hotel."},
+   {t:"11:45", b:"Leave for Chiang Mai Airport", tag:"tobook", p:"About 15 minutes away. Leave plenty of time for 9 people checking in."},
+   {t:"14:05", b:"TG107 Chiang Mai → Bangkok", tag:"booked", p:"Thai Airways, arrives 15:25. On the Qantas ticket: ask at check-in for bags to go straight through to Sydney."},
+   {t:"18:00", b:"QF24 Bangkok → Sydney", tag:"booked", p:"Overnight, about 9 h 35 min."}
+ ], tip:"5 Dec is a public holiday in Thailand (King Bhumibol's birthday). Airports run as normal."},
+
+ {date:"2026-12-06", city:"fly", place:"Sydney", title:"Home", sleep:null, items:[
+   {t:"7:35", b:"Land in Sydney, Terminal 1", p:""}
+ ]}
+];
+
+const PEOPLE = [
+  {group:"The Wards", members:[["andrew","Andrew Ward","46"],["cherry","Cherry Ward","46"],["dylan","Dylan Ward","15"]]},
+  {group:"Jamilar, Alan & kids", members:[["jamilar","Jamilar Aung","44"],["alan","Alan Abadiano","45"],["naima","Naima","12"],["ezra","Ezra","10"]]},
+  {group:"Grandparents", members:[["than","Than Aung","77"],["tintin","Tin Tin Win","77"]]}
+];
+
+const TODOS = [
+  {id:"insurance", txt:"Travel insurance for all 9 travellers", sm:"Add policy details on the Contacts tab."},
+  {id:"passports", txt:"Check every passport has 6+ months left after 6 Dec 2026"},
+  {id:"berkeley-cancel", txt:"Berkeley: free cancellation ends 17 Nov; card charged 16 Nov", due:"16 Nov"},
+  {id:"klook-luggage", txt:"Ask the airport van operator about luggage for 9", sm:"Van takes about 8 standard suitcases. Message via the Klook app (ref on the Travel tab)."},
+  {id:"other-rooms", txt:"Confirm the other groups' rooms at The Berkeley and the Hilton", sm:"The confirmations shared so far only cover the Wards' rooms in Bangkok and Hua Hin."},
+  {id:"tdac", txt:"Everyone submits their Thailand Digital Arrival Card", sm:"tdac.immigration.go.th, free. Only opens 3 days before arrival.", due:"18–21 Nov"},
+  {id:"qf-checkin", txt:"Qantas online check-in for QF23", due:"20 Nov"},
+  {id:"money-sim", txt:"Sort cash, travel cards and phone data (eSIM or roaming)"},
+  {id:"hilton-pay", txt:"Hilton payment charged; ask about Dylan's breakfast", sm:"The Hilton counts children 12+ as adults for breakfast.", due:"23 Nov"},
+  {id:"loy-krathong", txt:"Decide Loy Krathong plan for 24 Nov (park or cruise)"},
+  {id:"bkk-huahin", txt:"Book van Bangkok → Hua Hin for 25 Nov", sm:"9 people + luggage, 3–4 hours."},
+  {id:"hilton-late", txt:"Ask the Hilton for a late checkout on 29 Nov"},
+  {id:"airasia-checkin", txt:"AirAsia web check-in for FD3901", due:"28 Nov"},
+  {id:"hh-airport", txt:"Book Hilton → Hua Hin Airport on 29 Nov"},
+  {id:"cnx-arrive", txt:"Book Chiang Mai Airport → Mövenpick on 29 Nov (18:30 arrival)"},
+  {id:"elephants", txt:"Book the elephant sanctuary for 1 Dec", sm:"Books out weeks ahead."},
+  {id:"cooking", txt:"Book a family cooking class for 2 Dec"},
+  {id:"inthanon", txt:"Book a driver for Doi Inthanon on 3 Dec"},
+  {id:"cnx-depart", txt:"Book Mövenpick → Chiang Mai Airport on 5 Dec"}
+];
+
+const PACKING = [
+  ["passport","Passport"],["tdac","TDAC QR code (screenshot it)"],["tickets","E-tickets and booking refs (this app works too)"],
+  ["insurance","Travel insurance details"],["meds","Medicines in original packaging, plus scripts"],["adapter","Plug adapter for Thailand"],
+  ["power","Phone charger and power bank (carry-on only)"],["cash","Cards and some baht"],["temple","Temple outfit: covers shoulders and knees"],
+  ["light","Light, breathable clothes"],["jacket","Light jacket or jumper for Chiang Mai nights and Doi Inthanon"],["swim","Swimwear"],
+  ["shoes","Comfortable walking shoes + sandals"],["hat","Hat and sunglasses"],["sunscreen","Sunscreen"],["repellent","Insect repellent"],
+  ["daypack","Small daypack and water bottle"],["muddy","Old clothes for the elephant sanctuary"],["motion","Motion-sickness tablets for the van rides"],
+  ["tissues","Tissues and hand sanitiser"],["weigh","Checked bag under 20 kg for AirAsia"]
+];
+
+/* ---------------- Helpers ---------------- */
+const $ = s => document.querySelector(s);
+const el = (tag, attrs={}, ...kids) => { const e=document.createElement(tag); for(const [k,v] of Object.entries(attrs)){ if(k==="class") e.className=v; else if(k==="html") e.innerHTML=v; else if(k==="text") e.textContent=v; else if(v!==null&&v!==undefined&&v!==false) e.setAttribute(k,v);} for(const k of kids){ if(k==null) continue; e.append(k);} return e; };
+const DOW = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+const MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const CITYNAME = {bkk:"Bangkok",hh:"Hua Hin",cm:"Chiang Mai",fly:"Travel"};
+function parseD(s){const [y,m,d]=s.split("-").map(Number);return {y,m,d,dow:new Date(Date.UTC(y,m-1,d)).getUTCDay()};}
+function thaiToday(){ // Thailand is UTC+7
+  const n=new Date(Date.now()+7*3600*1000); return n.toISOString().slice(0,10);
+}
+function toast(msg){const t=$("#toast");t.textContent=msg;t.classList.add("show");clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove("show"),1800);}
+function lsGet(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}}
+function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+function safeId(s){return String(s).replace(/[^A-Za-z0-9_\-]/g,"-").slice(0,80);}
+
+/* ---------------- State (shared through Supabase) ---------------- */
+const SB_URL="https://sajfvtupdqymkdwsimcz.supabase.co";
+const SB_KEY="sb_publishable_-d6qefyvuDNEAu8ZlExrVA_n-ZHRfxw";
+const FAMILY_EMAIL="thailand-family@cherryward.co";
+const ALL_PEOPLE = PEOPLE.flatMap(g=>g.members.map(([id,name])=>({id,name})));
+const state = {
+  canWrite:true, online:false,
+  me:lsGet("trip.me",null),            // {id,name}
+  checks:{}, extraTodos:{}, notes:{}, people:{}, insurance:{}, pack:{}, info:{},
+  names:new Proxy({}, {get:(t,k)=>typeof k==="string"?k:undefined})  // "by" already holds a first name
+};
+const rows = new Map();                 // "kind/id" -> row
+const rkey = r => r.kind+"/"+r.id;
+let sb=null, infoSig="";
+function applyRows(){
+  state.checks={}; state.extraTodos={}; state.notes={}; state.people={}; state.insurance={}; state.info={};
+  let pack=null;
+  for(const r of rows.values()){
+    const d=r.data||{};
+    if(r.kind==="check") state.checks[r.id]={done:!!d.done, by:r.updated_by};
+    else if(r.kind==="todo") state.extraTodos[r.id]={txt:d.txt, at:d.at};
+    else if(r.kind==="note") state.notes[r.id]={day:d.day, txt:d.txt, at:d.at, by:r.updated_by};
+    else if(r.kind==="person") state.people[r.id]=d;
+    else if(r.kind==="insurance") state.insurance[r.id]=d;
+    else if(r.kind==="info" && r.id==="refs") state.info=d;
+    else if(r.kind==="packing" && state.me && r.id===state.me.id) pack=d.items||{};
+  }
+  state.pack = pack || lsGet("trip.pack."+(state.me?state.me.id:"x"),{});
+}
+
+/* ---------------- Render: Plan ---------------- */
+function renderStrip(){
+  const strip=$("#strip"); strip.textContent="";
+  const today=thaiToday();
+  DAYS.forEach((d,i)=>{
+    const p=parseD(d.date);
+    const b=el("button",{type:"button",class:"chip"+(d.date===today?" today":""),"data-city":d.city,role:"listitem","aria-label":`Day ${i+1}, ${DOW[p.dow]} ${p.d} ${MON[p.m-1]}, ${CITYNAME[d.city]}`},
+      el("div",{class:"d",text:DOW[p.dow]}), el("div",{class:"n",text:String(p.d)}), el("div",{class:"c",text:d.city==="fly"?"✈":CITYNAME[d.city].split(" ")[0]}));
+    b.addEventListener("click",()=>{ document.getElementById("day-"+i).scrollIntoView({behavior:"smooth",block:"start"}); strip.querySelectorAll(".chip").forEach(c=>c.classList.remove("sel")); b.classList.add("sel"); });
+    strip.append(b);
+  });
+}
+function renderDays(){
+  const wrap=$("#days"); wrap.textContent="";
+  const today=thaiToday();
+  DAYS.forEach((d,i)=>{
+    const p=parseD(d.date);
+    const head=el("div",{class:"day-head"},
+      el("div",{class:"day-meta"}, el("span",{html:`Day ${i+1} · ${DOW[p.dow]} ${p.d} ${MON[p.m-1]}`+(d.date===today?'<span class="today-flag">Today</span>':"")}), el("span",{class:"city",text:d.place})),
+      el("h2",{text:d.title}),
+      d.sleep? el("div",{class:"sleep",html:`Tonight: <b>${HOTEL[d.sleep].name}</b>`}) : (i===14? el("div",{class:"sleep",text:"Tonight: on the plane"}):null)
+    );
+    const ol=el("ol",{class:"tl"});
+    d.items.forEach(it=>{
+      const pill = it.tag ? el("span",{class:"pill "+it.tag,text:{booked:"Booked",tobook:"To book",opt:"Optional",event:"Event"}[it.tag]}) : null;
+      const b=el("b",{}, it.b, pill);
+      const links=el("div",{class:"links"});
+      if(it.map) links.append(el("a",{href:it.map,target:"_blank",rel:"noopener",text:"Map"}));
+      if(it.links) it.links.forEach(l=>links.append(el("span",{class:"small",text:l[0]})));
+      ol.append(el("li",{}, el("div",{class:"t",text:it.t}), el("div",{class:"what"}, b, it.p?el("p",{text:it.p}):null, links.childNodes.length?links:null)));
+    });
+    const card=el("article",{class:"day","data-city":d.city,id:"day-"+i}, head, ol, d.tip?el("div",{class:"tip",html:d.tip}):null, renderNotesBox(d.date));
+    wrap.append(card);
+  });
+}
+function renderNotesBox(date){
+  const box=el("div",{class:"notes","data-notes":date});
+  box.append(el("h3",{text:"Family notes & ideas"}));
+  const list=el("div",{class:"notelist"}); box.append(list);
+  const inId="note-"+date;
+  const form=el("form",{class:"add",autocomplete:"off"},
+    el("label",{for:inId,class:"small",style:"position:absolute;left:-9999px",text:"Add a note for this day"}),
+    el("input",{id:inId,maxlength:"200",placeholder:"Add an idea or note for this day"}),
+    el("button",{type:"submit",text:"Add"}));
+  form.addEventListener("submit",e=>{e.preventDefault();const v=form.querySelector("input").value.trim(); if(!v) return; addNote(date,v); form.querySelector("input").value="";});
+  box.append(form);
+  return box;
+}
+function fillNotes(){
+  document.querySelectorAll("[data-notes]").forEach(box=>{
+    const date=box.getAttribute("data-notes");
+    const list=box.querySelector(".notelist"); list.textContent="";
+    const items=Object.entries(state.notes).filter(([,n])=>n&&n.day===date).sort((a,b)=>(a[1].at||0)-(b[1].at||0));
+    if(!items.length){ list.append(el("div",{class:"small",text:"No notes yet."})); }
+    items.forEach(([id,n])=>{
+      const who = n.by && state.names[n.by] ? state.names[n.by] : "";
+      const row=el("div",{class:"note"}, el("div",{}, el("div",{text:n.txt}), who?el("div",{class:"who",text:who}):null));
+      if(state.canWrite){ const x=el("button",{class:"x",type:"button","aria-label":"Delete note",text:"×"}); x.addEventListener("click",()=>delNote(id)); row.append(x); }
+      list.append(row);
+    });
+    box.querySelector("form").hidden=!state.canWrite;
+  });
+}
+
+/* ---------------- Render: Travel ---------------- */
+function copyBtn(v){const b=el("button",{class:"copy",type:"button",text:"Copy"});b.addEventListener("click",async()=>{try{await navigator.clipboard.writeText(v);toast("Copied "+v);}catch(e){toast("Couldn't copy. Press and hold to select.");}});return b;}
+function refRow(label,key,nocopy){const v=(state.info&&state.info[key])||""; if(!v) return [el("dt",{text:label}), el("dd",{class:"small",text:"Log in to see"})]; return [el("dt",{text:label}), el("dd",{}, el("span",{class:"ref",text:v}), nocopy?null:copyBtn(v))];}
+function flightCard(o){
+  const plane='<svg viewBox="0 0 44 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 8h40" stroke-dasharray="3 3"/><path d="M34 3l6 5-6 5" /></svg>';
+  const c=el("div",{class:"card"},
+    el("div",{class:"kicker",text:o.when}),
+    el("h3",{text:o.title}),
+    el("div",{class:"flight"},
+      el("div",{}, el("div",{class:"code",text:o.from}), el("div",{class:"time",text:o.dep}), el("div",{class:"place",text:o.fromName})),
+      el("div",{class:"mid",html:plane+o.dur}),
+      el("div",{class:"r"}, el("div",{class:"code",text:o.to}), el("div",{class:"time",text:o.arr}), el("div",{class:"place",text:o.toName}))
+    ));
+  const dl=el("dl",{class:"kv"});
+  (o.rows||[]).forEach(r=>{ if(r.ref) dl.append(...refRow(r.k,r.ref,r.nocopy)); else dl.append(el("dt",{text:r.k}),el("dd",{text:r.v})); });
+  c.append(dl);
+  if(o.extra) c.append(o.extra);
+  return c;
+}
+function renderTravel(){
+  const t=$("#travel"); t.textContent="";
+  t.append(el("h2",{class:"sectiontitle",text:"Flights"}));
+  t.append(flightCard({when:"Sat 21 Nov · all 9",title:"Qantas QF23",from:"SYD",to:"BKK",dep:"10:25",arr:"16:10",fromName:"Sydney T1",toName:"Bangkok Suvarnabhumi",dur:"9h 45m",
+    rows:[{k:"Wards' booking",ref:"qf"},{k:"Others' booking",v:"Add in the notes on Day 1"},{k:"Checked bag",v:"Economy 30 kg (more for Qantas Gold/Silver members)"},{k:"Carry-on",v:"1 bag, 7 kg"}]}));
+  const seats=[["29A","Tin Tin","Nasi lemak"],["29B","Ezra","Chicken rice"],["29C","Than","Chicken rice"],["30A","Jamilar","Nasi lemak"],["30B","Naima","Chicken rice"],["30C","Alan","Chicken rice"],["30D","Cherry","Chicken rice"],["30E","Andrew","Nasi lemak"],["30F","Dylan","Chicken rice"]];
+  const grid=el("div",{class:"seatgrid"}); seats.forEach(s=>grid.append(el("div",{class:"seat"}, el("b",{text:s[0]}), " ", s[1], el("div",{class:"small",text:s[2]}))));
+  t.append(flightCard({when:"Sun 29 Nov · all 9",title:"Thai AirAsia FD3901",from:"HHQ",to:"CNX",dep:"17:15",arr:"18:30",fromName:"Hua Hin",toName:"Chiang Mai",dur:"1h 15m",
+    rows:[{k:"Booking",ref:"airasia"},{k:"Booked by",v:"Jamilar"},{k:"Checked bag",v:"20 kg each (prepaid)"},{k:"Carry-on",v:"7 kg each"},{k:"Name check",v:"Alan is booked as ALLEN KHRISTIAN ABADIANO: make sure that matches his passport."}],
+    extra:el("div",{}, el("div",{class:"kicker",style:"margin-top:10px",text:"Seats & pre-ordered meals"}), grid)}));
+  t.append(flightCard({when:"Sat 5 Dec · all 9",title:"Thai Airways TG107",from:"CNX",to:"BKK",dep:"14:05",arr:"15:25",fromName:"Chiang Mai",toName:"Bangkok Suvarnabhumi",dur:"1h 20m",
+    rows:[{k:"Booking",ref:"D4HDDC"},{k:"Note",v:"Same ticket as QF24. Ask for bags to be checked through to Sydney."}]}));
+  t.append(flightCard({when:"Sat 5 Dec · all 9",title:"Qantas QF24",from:"BKK",to:"SYD",dep:"18:00",arr:"07:35 +1",fromName:"Bangkok",toName:"Sydney T1, Sun 6 Dec",dur:"9h 35m",
+    rows:[{k:"Wards' booking",ref:"D4HDDC"}]}));
+
+  t.append(el("h2",{class:"sectiontitle",text:"Hotels"}));
+  const stay=(city,o)=>{const c=el("div",{class:"card stay","data-city":city}, el("div",{class:"kicker",text:o.when}), el("h3",{text:o.name}));
+    const dl=el("dl",{class:"kv"}); o.rows.forEach(r=>{ if(r.ref) dl.append(...refRow(r.k,r.ref)); else dl.append(el("dt",{text:r.k}),el("dd",{text:r.v}));}); c.append(dl);
+    c.append(el("div",{class:"links",style:"display:flex;gap:14px;margin-top:8px;font-size:.9rem"}, el("a",{href:o.map,target:"_blank",rel:"noopener",text:"Open in Maps"})));
+    return c;};
+  t.append(stay("bkk",{when:"Sat 21 – Wed 25 Nov · 4 nights",name:"The Berkeley Hotel Pratunam",map:HOTEL.bkk.map,rows:[
+    {k:"Address",v:"559 Ratchaprarop Rd, Ratchathewi, Bangkok 10400"},{k:"Phone",v:"+66 2 309 9999"},{k:"Check in / out",v:"After 3pm · before 12pm"},
+    {k:"Wards' rooms",v:"2 × Premier (North Tower), breakfast included"},{k:"Agoda booking",ref:"berkeley"}]}));
+  t.append(stay("hh",{when:"Wed 25 – Sun 29 Nov · 4 nights",name:"Hilton Hua Hin Resort & Spa",map:HOTEL.hh.map,rows:[
+    {k:"Address",v:"33 Naresdamri Rd, Hua Hin 77110"},{k:"Phone",v:"+66 32 538 999"},{k:"Check in / out",v:"After 3pm · before 12pm"},
+    {k:"Wards' room",v:"Twin Premium Ocean View, breakfast, 25% off hotel services"},{k:"Agoda booking",ref:"hilton"},
+    {k:"Note",v:"Kids 12 and over are charged as adults for breakfast."}]}));
+  t.append(stay("cm",{when:"Sun 29 Nov – Sat 5 Dec · 6 nights",name:"Mövenpick Suriwongse Hotel Chiang Mai",map:HOTEL.cm.map,rows:[
+    {k:"Address",v:"110 Changklan Rd, Chiang Mai"},{k:"Phone",v:"+66 53 270 051"},
+    {k:"Rooms",v:"4 × Classic King, daily breakfast, for all 9 (booked by Jamilar via Luxury Escapes)"},
+    {k:"Main booking",ref:"movenpick"},{k:"Room bookings",ref:"movenpickRooms",nocopy:true}]}));
+
+  t.append(el("h2",{class:"sectiontitle",text:"Transfers"}));
+  const tr=el("div",{class:"card"}, el("div",{class:"kicker",text:"Sat 21 Nov · booked"}), el("h3",{text:"Airport → The Berkeley"}));
+  const dl=el("dl",{class:"kv"});
+  dl.append(...refRow("Klook booking","klook"));
+  [["Operator","Ujoyous Travel, +66 80 046 4688"],["Vehicle","Toyota Hiace/Commuter, up to 10 people, about 8 standard suitcases"],["Meet","Exit B → turn right → railings between Gates 3 and 4, opposite the information desk, KLOOK sign"],["Waiting","Driver tracks QF23. Message them once you have your bags."],["Cancel","Free up to 24 hours before"]].forEach(r=>dl.append(el("dt",{text:r[0]}),el("dd",{text:r[1]})));
+  tr.append(dl); t.append(tr);
+  [["Wed 25 Nov","Bangkok → Hua Hin","Van for 9 + luggage, about 3–4 hours."],["Sun 29 Nov","Hilton → Hua Hin Airport","About 15 minutes. Leave around 15:15."],["Sun 29 Nov","Chiang Mai Airport → Mövenpick","About 15 minutes. Land 18:30."],["Sat 5 Dec","Mövenpick → Chiang Mai Airport","About 15 minutes. Leave around 11:45."]].forEach(r=>{
+    t.append(el("div",{class:"card"}, el("div",{class:"kicker",html:`${r[0]} · <span style="color:var(--warn)">to book</span>`}), el("h3",{text:r[1]}), el("p",{class:"small",style:"margin:4px 0 0",text:r[2]})));
+  });
+}
+
+/* ---------------- Render: Lists ---------------- */
+function allTodos(){
+  const extras=Object.entries(state.extraTodos).filter(([,v])=>v&&v.txt).sort((a,b)=>(a[1].at||0)-(b[1].at||0)).map(([id,v])=>({id:"x-"+id,txt:v.txt,extra:id}));
+  return TODOS.concat(extras);
+}
+function renderTodos(){
+  const ul=$("#todo-list"); ul.textContent="";
+  const list=allTodos(); let done=0;
+  list.forEach(td=>{
+    const c=state.checks[td.id]; const isDone=!!(c&&c.done); if(isDone) done++;
+    const cb=el("input",{type:"checkbox",class:"check",id:"td-"+td.id,"aria-label":td.txt}); cb.checked=isDone; cb.disabled=!state.canWrite;
+    cb.addEventListener("change",()=>setCheck(td.id,cb.checked));
+    const who = isDone && c.by && state.names[c.by] ? "Done by "+state.names[c.by] : "";
+    const body=el("div",{class:"li-body"}, td.due?el("div",{class:"due",text:td.due}):null, el("label",{for:"td-"+td.id,class:"txt",text:td.txt}), td.sm?el("div",{class:"sm",text:td.sm}):null, who?el("div",{class:"sm",text:who}):null);
+    const li=el("li",{class:isDone?"done":""}, cb, body);
+    if(td.extra && state.canWrite){const x=el("button",{class:"copy",type:"button","aria-label":"Delete to-do",text:"Delete"});x.addEventListener("click",()=>delTodo(td.extra,td.id));li.append(x);}
+    ul.append(li);
+  });
+  $("#todo-bar").style.width=(list.length?Math.round(done/list.length*100):0)+"%";
+  $("#todo-count").textContent=`${done} of ${list.length} done`;
+  const left=list.length-done, badge=$("#todo-badge"); badge.hidden=!left; badge.textContent=left;
+  $("#todo-add").hidden=!state.canWrite;
+}
+function renderPack(){
+  const ul=$("#pack-list"); ul.textContent=""; let done=0;
+  PACKING.forEach(([id,txt])=>{
+    const on=!!state.pack[id]; if(on) done++;
+    const cb=el("input",{type:"checkbox",class:"check",id:"pk-"+id}); cb.checked=on;
+    cb.addEventListener("change",()=>setPack(id,cb.checked));
+    ul.append(el("li",{class:on?"done":""}, cb, el("div",{class:"li-body"}, el("label",{for:"pk-"+id,class:"txt",text:txt}))));
+  });
+  $("#pack-bar").style.width=Math.round(done/PACKING.length*100)+"%";
+  $("#pack-count").textContent=`${done} of ${PACKING.length} packed`;
+}
+
+/* ---------------- Render: Info ---------------- */
+function renderPeople(){
+  const wrap=$("#people"); wrap.textContent="";
+  PEOPLE.forEach(g=>{
+    const box=el("div",{class:"group",style:"margin-bottom:10px"}, el("div",{class:"kicker",text:g.group}));
+    g.members.forEach(([id,name,age])=>{
+      const v=(state.people[id]&&state.people[id].phone)||"";
+      const inp=el("input",{id:"ph-"+id,type:"tel",inputmode:"tel",placeholder:"Mobile number","aria-label":"Mobile for "+name,value:v});
+      inp.disabled=!state.canWrite;
+      inp.addEventListener("change",()=>setPhone(id,inp.value.trim()));
+      const link = v ? el("a",{href:"tel:"+v.replace(/[^+\d]/g,""),class:"small",text:"Call"}) : null;
+      box.append(el("div",{class:"person"}, el("div",{}, el("div",{class:"nm",text:name}), el("div",{class:"age",text:"Age "+age})), el("div",{style:"display:flex;gap:8px;align-items:center"}, link, inp)));
+    });
+    wrap.append(box);
+  });
+  const ins=$("#insurance"); ins.textContent="";
+  PEOPLE.forEach((g,i)=>{
+    const key="g"+i; const v=(state.insurance[key]&&state.insurance[key].txt)||"";
+    const inp=el("input",{id:"ins-"+key,placeholder:"Insurer, policy no., 24h number","aria-label":"Insurance for "+g.group,value:v,style:"width:100%;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:8px;padding:8px;font:inherit;font-size:.9rem;margin-top:4px"});
+    inp.disabled=!state.canWrite;
+    inp.addEventListener("change",()=>setIns(key,inp.value.trim()));
+    ins.append(el("div",{style:"margin-bottom:10px"}, el("div",{class:"kicker",text:g.group}), inp));
+  });
+}
+
+
+/* ---------------- Writes ---------------- */
+function cacheRows(){ lsSet("trip.cache",[...rows.values()]); }
+async function save(kind,id,data){
+  const row={kind,id,data,updated_by:state.me?state.me.name:null,updated_at:new Date().toISOString()};
+  rows.set(rkey(row),row); applyRows(); renderAll(); cacheRows();
+  try{ const {error}=await sb.from("trip_items").upsert({kind,id,data,updated_by:row.updated_by}); if(error) throw error; }
+  catch(e){ toast("Couldn't save. Check your internet and try again."); }
+}
+async function removeRow(kind,id){
+  rows.delete(kind+"/"+id); applyRows(); renderAll(); cacheRows();
+  try{ const {error}=await sb.from("trip_items").delete().eq("kind",kind).eq("id",id); if(error) throw error; }
+  catch(e){ toast("Couldn't delete. Check your internet and try again."); }
+}
+const newId=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+function setCheck(id,done){ save("check",safeId(id),{done}); }
+function addNote(day,txt){ save("note",newId(),{day,txt,at:Date.now()}); }
+function delNote(id){ removeRow("note",id); }
+function addTodo(txt){ save("todo",newId(),{txt,at:Date.now()}); }
+function delTodo(id,checkId){ removeRow("todo",id); if(state.checks[safeId(checkId)]) removeRow("check",safeId(checkId)); }
+function setPhone(id,phone){ save("person",id,{phone}); }
+function setIns(key,txt){ save("insurance",key,{txt}); }
+let packTimer=null;
+function setPack(id,on){
+  if(on) state.pack[id]=true; else delete state.pack[id];
+  renderPack();
+  if(!state.me) return;
+  lsSet("trip.pack."+state.me.id,state.pack);
+  clearTimeout(packTimer);
+  const items=Object.assign({},state.pack), me=state.me;
+  packTimer=setTimeout(()=>{ const row={kind:"packing",id:me.id,data:{items},updated_by:me.name}; rows.set(rkey(row),row); cacheRows();
+    sb.from("trip_items").upsert(row).then(({error})=>{ if(error) toast("Couldn't save your packing list."); }); },700);
+}
+
+/* ---------------- Sync status ---------------- */
+function setSync(msg){
+  $("#sync").textContent = msg || (state.online ? `Everyone sees the same lists · You're ${state.me?state.me.name:"?"}` : "Offline: showing the last saved copy");
+}
+
+/* ---------------- Countdown ---------------- */
+function renderCountdown(){
+  const today=thaiToday(); const start="2026-11-21", end="2026-12-06";
+  const days=(a,b)=>Math.round((Date.parse(b)-Date.parse(a))/86400000);
+  let txt;
+  if(today<start){ const n=days(today,start); txt = n===1?"Tomorrow!":`${n} days to go`; }
+  else if(today<=end){ txt=`Day ${days(start,today)+1} of 16`; }
+  else txt="Welcome home";
+  $("#countdown").textContent=txt;
+}
+
+/* ---------------- Tabs ---------------- */
+const TABS=["plan","travel","lists","info"];
+function showTab(name,push){
+  TABS.forEach(n=>{ $("#tab-"+n).classList.toggle("active",n===name); $("#nav-"+n).setAttribute("aria-selected",String(n===name)); });
+  if(push){ try{ history.replaceState(null,"","#"+name); }catch(e){} }
+  window.scrollTo(0,0);
+  if(name==="plan") scrollToToday(false);
+}
+TABS.forEach(n=>$("#nav-"+n).addEventListener("click",()=>showTab(n,true)));
+window.addEventListener("hashchange",()=>{const h=location.hash.slice(1); if(TABS.includes(h)) showTab(h,false);});
+$("#seg-todo").addEventListener("click",()=>{$("#seg-todo").setAttribute("aria-pressed","true");$("#seg-pack").setAttribute("aria-pressed","false");$("#todo-card").hidden=false;$("#pack-card").hidden=true;});
+$("#seg-pack").addEventListener("click",()=>{$("#seg-pack").setAttribute("aria-pressed","true");$("#seg-todo").setAttribute("aria-pressed","false");$("#todo-card").hidden=true;$("#pack-card").hidden=false;});
+$("#todo-add").addEventListener("submit",e=>{e.preventDefault();const i=$("#todo-input");const v=i.value.trim();if(!v)return;addTodo(v);i.value="";});
+function scrollToToday(smooth){
+  const idx=DAYS.findIndex(d=>d.date===thaiToday());
+  if(idx>=0){ const node=document.getElementById("day-"+idx); if(node) node.scrollIntoView({behavior:smooth?"smooth":"auto",block:"start"}); const chip=$("#strip").children[idx]; if(chip) chip.scrollIntoView({inline:"center",block:"nearest"}); }
+}
+
+/* ---------------- Boot ---------------- */
+function renderAll(){ fillNotes(); renderTodos(); renderPack(); renderPeople(); renderMe();
+  const sig=JSON.stringify(state.info); if(sig!==infoSig){ infoSig=sig; renderTravel(); } }
+function renderMe(){
+  const box=$("#me-box"); if(!box) return; box.textContent="";
+  box.append(el("div",{}, el("span",{class:"small",text:"Using the app as "}), el("b",{text:state.me?state.me.name:"nobody yet"})));
+  const ch=el("button",{type:"button",class:"copy",text:"Change name"}); ch.addEventListener("click",showPicker);
+  const lo=el("button",{type:"button",class:"copy",text:"Log out"}); lo.addEventListener("click",logout);
+  box.append(el("div",{style:"display:flex;gap:6px"}, ch, lo));
+}
+function showLogin(){ $("#gate").hidden=false; $("#gate-login").hidden=false; $("#gate-pick").hidden=true; setTimeout(()=>$("#pw").focus(),50); }
+function showPicker(){
+  $("#gate").hidden=false; $("#gate-login").hidden=true; $("#gate-pick").hidden=false;
+  const g=$("#pick-grid"); g.textContent="";
+  ALL_PEOPLE.forEach(p=>{ const b=el("button",{type:"button",class:"pick",text:p.name.split(" ")[0]}); b.addEventListener("click",()=>{ state.me={id:p.id,name:p.name.split(" ")[0]}; lsSet("trip.me",state.me); $("#gate").hidden=true; applyRows(); renderAll(); setSync(); }); g.append(b); });
+}
+async function logout(){ try{ await sb.auth.signOut(); }catch(e){} try{ localStorage.removeItem("trip.cache"); }catch(e){} rows.clear(); applyRows(); renderAll(); showLogin(); }
+$("#gate-login").addEventListener("submit", async e=>{
+  e.preventDefault(); const err=$("#login-err"); err.textContent=""; const btn=$("#login-btn"); btn.disabled=true; btn.textContent="Opening…";
+  try{
+    const {error}=await sb.auth.signInWithPassword({email:FAMILY_EMAIL,password:$("#pw").value.trim()});
+    if(error) throw error;
+    $("#pw").value=""; await startData(); if(!state.me) showPicker(); else $("#gate").hidden=true;
+  }catch(ex){ err.textContent = (ex&&/invalid/i.test(ex.message||"")) ? "That password isn't right. Check with Cherry." : "Can't connect. Check your internet and try again."; }
+  finally{ btn.disabled=false; btn.textContent="Open the trip"; }
+});
+let channel=null;
+async function fetchAll(){
+  const {data,error}=await sb.from("trip_items").select("kind,id,data,updated_by,updated_at");
+  if(error) throw error;
+  rows.clear(); (data||[]).forEach(r=>rows.set(rkey(r),r)); cacheRows(); state.online=true; applyRows(); renderAll(); setSync();
+}
+async function startData(){
+  try{ await fetchAll(); }catch(e){ state.online=false; setSync(); }
+  if(!channel){
+    channel=sb.channel("trip-items").on("postgres_changes",{event:"*",schema:"public",table:"trip_items"},p=>{
+      if(p.eventType==="DELETE"){ if(p.old&&p.old.kind) rows.delete(rkey(p.old)); }
+      else if(p.new&&p.new.kind){ rows.set(rkey(p.new),p.new); }
+      cacheRows(); applyRows(); renderAll();
+    }).subscribe();
+  }
+}
+document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="visible" && sb && state.online!==null) fetchAll().catch(()=>{ state.online=false; setSync(); }); });
+window.addEventListener("online",()=>fetchAll().catch(()=>{}));
+window.addEventListener("offline",()=>{ state.online=false; setSync(); });
+
+// first paint from the last saved copy, then connect
+(lsGet("trip.cache",[])||[]).forEach(r=>rows.set(rkey(r),r)); applyRows();
+renderCountdown(); renderStrip(); renderDays(); renderTravel(); infoSig=JSON.stringify(state.info); renderAll(); setSync("Connecting…");
+{ const h=location.hash.slice(1); if(TABS.includes(h)) showTab(h,false); else scrollToToday(false); }
+(async function(){
+  if(!window.supabase){ setSync("Can't load. Check your internet and refresh."); return; }
+  sb=window.supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:true,autoRefreshToken:true,storageKey:"trip-auth"}});
+  let session=null; try{ ({data:{session}}=await sb.auth.getSession()); }catch(e){}
+  if(!session){ showLogin(); setSync("Log in to see the shared lists"); return; }
+  await startData(); if(!state.me) showPicker();
+})();
+</script>
+</body>
+</html>
