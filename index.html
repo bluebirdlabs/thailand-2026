@@ -247,7 +247,6 @@ ul.plain li{margin:4px 0}
       <div class="alert" id="gaps">
         <h3>Not booked yet</h3>
         <ul>
-          <li><b>Wed 25 Nov:</b> Bangkok → Hua Hin for 9 people (about 3–4 hours by van).</li>
           <li><b>Sun 29 Nov:</b> Hilton → Hua Hin Airport, and Chiang Mai Airport → Mövenpick.</li>
           <li><b>Sat 5 Dec:</b> Mövenpick → Chiang Mai Airport.</li>
           <li><b>Airport van on 21 Nov:</b> booked for 9, but the van takes about 8 standard suitcases. Ask the operator about a bigger van or a second car.</li>
@@ -402,18 +401,18 @@ const DAYS = [
    {t:"11:00", b:"Wat Pho (Reclining Buddha)", p:"A short walk south. Shady and calmer than the Palace."},
    {t:"12:00", b:"Ferry across to Wat Arun", tag:"opt", p:"The cross-river ferry from Tha Tien pier takes a few minutes. Steep steps at Wat Arun, so the grandparents may prefer to watch from the bottom."},
    {t:"14:00", b:"Rest at the hotel", p:""},
-   {t:"Evening", b:"Loy Krathong fair at Mahakan Fort", tag:"event", p:"Bangkok is running Loy Krathong events 23–25 Nov at Mahakan Fort, near the Golden Mount.", map:MAP("Mahakan Fort Bangkok")}
+   {t:"18:00", b:"Muay Thai at Rajadamnern Stadium", tag:"tobook", p:"Thailand's oldest boxing stadium, with fights every night. Mondays are usually Rajadamnern Knockout, about 7pm–9pm. Families are welcome. Book ringside or club-class seats ahead, as it can sell out. It's loud and the fights are real, so check the kids are happy with that. The grandparents may prefer a quiet night.", map:MAP("Rajadamnern Stadium Bangkok")}
  ]},
 
  {date:"2026-11-24", city:"bkk", place:"Bangkok", title:"Loy Krathong night", sleep:"bkk", items:[
    {t:"Morning", b:"SEA LIFE Bangkok Ocean World", tag:"opt", p:"Under Siam Paragon, about 15 minutes from the hotel. Air-conditioned and good for all ages.", map:MAP("SEA LIFE Bangkok Ocean World")},
    {t:"Afternoon", b:"Rest and get ready", p:"Pick up krathongs (small floating baskets of banana leaf and flowers) from a street seller or make them together."},
-   {t:"18:30", b:"Float krathongs for Loy Krathong", tag:"event", p:"Tonight is the full moon festival. Lumpini Park's lake is the family-friendly choice: calmer than the riverside crowds, with paths for the grandparents. A river dinner cruise is the other option, but needs booking.", map:MAP("Lumpini Park Bangkok")}
+   {t:"~19:00", b:"Loy Krathong dinner cruise on the river", tag:"tobook", p:"Tonight is the full moon festival, so the river is full of floating krathongs and fireworks. Several cruises run special Loy Krathong sailings, for example the Chao Phraya Princess from ICONSIAM: about 3 hours, buffet dinner, live music and a krathong for everyone. Loy Krathong tickets usually can't be cancelled and sell out, so book soon. Allow at least an hour to get there through festival traffic.", map:MAP("ICONSIAM Bangkok")}
  ], tip:"<b>Pack tonight.</b> Tomorrow is a road day and The Berkeley checkout is 12:00."},
 
  {date:"2026-11-25", city:"fly", place:"Bangkok → Hua Hin", title:"Road trip to the beach", sleep:"hh", items:[
    {t:"Morning", b:"Breakfast and check out of The Berkeley", p:"Checkout before 12:00."},
-   {t:"~10:30", b:"Private van to Hua Hin", tag:"tobook", p:"About 3–4 hours depending on traffic. Book a van for 9 people plus luggage, or two cars."},
+   {t:"~10:30", b:"Private van to Hua Hin", tag:"booked", p:"TTD Global via Klook, van for 9, booked by Jamilar. About 3–4 hours. The booking shows no pickup time yet: confirm the time and The Berkeley as the pickup in the Klook app. Free cancellation until 24 Nov.", links:[["Booking ref on the Travel tab"]]},
    {t:"15:00", b:"Check in at the Hilton Hua Hin", p:"Twin Premium Ocean View. Breakfast included.", map:HOTEL.hh.map},
    {t:"18:00", b:"Hua Hin Night Market", p:"A short walk from the Hilton. Seafood, snacks and souvenirs.", map:MAP("Hua Hin Night Market")}
  ]},
@@ -505,8 +504,9 @@ const TODOS = [
   {id:"qf-checkin", txt:"Qantas online check-in for QF23", due:"20 Nov"},
   {id:"money-sim", txt:"Sort cash, travel cards and phone data (eSIM or roaming)"},
   {id:"hilton-pay", txt:"Hilton payment charged; ask about Dylan's breakfast", sm:"The Hilton counts children 12+ as adults for breakfast.", due:"23 Nov"},
-  {id:"loy-krathong", txt:"Decide Loy Krathong plan for 24 Nov (park or cruise)"},
-  {id:"bkk-huahin", txt:"Book van Bangkok → Hua Hin for 25 Nov", sm:"9 people + luggage, 3–4 hours."},
+  {id:"loy-cruise", txt:"Book the Loy Krathong dinner cruise for 24 Nov", sm:"Special-night tickets usually can't be cancelled and sell out."},
+  {id:"muay-thai", txt:"Book Muay Thai tickets at Rajadamnern for Mon 23 Nov"},
+  {id:"hh-van-time", txt:"Confirm pickup time and hotel for the Hua Hin van (25 Nov)", sm:"Message TTD Global in the Klook app. Suggest about 10:30 at The Berkeley."},
   {id:"hilton-late", txt:"Ask the Hilton for a late checkout on 29 Nov"},
   {id:"airasia-checkin", txt:"AirAsia web check-in for FD3901", due:"28 Nov"},
   {id:"hh-airport", txt:"Book Hilton → Hua Hin Airport on 29 Nov"},
@@ -693,7 +693,12 @@ function renderTravel(){
   dl.append(...refRow("Klook booking","klook"));
   [["Operator","Ujoyous Travel, +66 80 046 4688"],["Vehicle","Toyota Hiace/Commuter, up to 10 people, about 8 standard suitcases"],["Meet","Exit B → turn right → railings between Gates 3 and 4, opposite the information desk, KLOOK sign"],["Waiting","Driver tracks QF23. Message them once you have your bags."],["Cancel","Free up to 24 hours before"]].forEach(r=>dl.append(el("dt",{text:r[0]}),el("dd",{text:r[1]})));
   tr.append(dl); t.append(tr);
-  [["Wed 25 Nov","Bangkok → Hua Hin","Van for 9 + luggage, about 3–4 hours."],["Sun 29 Nov","Hilton → Hua Hin Airport","About 15 minutes. Leave around 15:15."],["Sun 29 Nov","Chiang Mai Airport → Mövenpick","About 15 minutes. Land 18:30."],["Sat 5 Dec","Mövenpick → Chiang Mai Airport","About 15 minutes. Leave around 11:45."]].forEach(r=>{
+  const hh=el("div",{class:"card"}, el("div",{class:"kicker",text:"Wed 25 Nov · booked"}), el("h3",{text:"The Berkeley → Hua Hin"}));
+  const dl2=el("dl",{class:"kv"});
+  dl2.append(...refRow("Klook booking","klookHuaHin"));
+  [["Operator","TTD Global"],["Vehicle","Van, group of up to 9"],["Lead name","Jamilar"],["Pickup","Bangkok downtown. Time not set yet: confirm about 10:30 at The Berkeley in the Klook app"],["Drop-off","Hilton Hua Hin"],["Cancel","Free until 24 Nov (Bangkok time)"]].forEach(r=>dl2.append(el("dt",{text:r[0]}),el("dd",{text:r[1]})));
+  hh.append(dl2); t.append(hh);
+  [["Sun 29 Nov","Hilton → Hua Hin Airport","About 15 minutes. Leave around 15:15."],["Sun 29 Nov","Chiang Mai Airport → Mövenpick","About 15 minutes. Land 18:30."],["Sat 5 Dec","Mövenpick → Chiang Mai Airport","About 15 minutes. Leave around 11:45."]].forEach(r=>{
     t.append(el("div",{class:"card"}, el("div",{class:"kicker",html:`${r[0]} · <span style="color:var(--warn)">to book</span>`}), el("h3",{text:r[1]}), el("p",{class:"small",style:"margin:4px 0 0",text:r[2]})));
   });
 }
