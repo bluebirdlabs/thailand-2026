@@ -401,7 +401,7 @@ const DAYS = [
    {t:"11:00", b:"Wat Pho (Reclining Buddha)", p:"A short walk south. Shady and calmer than the Palace."},
    {t:"12:00", b:"Ferry across to Wat Arun", tag:"opt", p:"The cross-river ferry from Tha Tien pier takes a few minutes. Steep steps at Wat Arun, so the grandparents may prefer to watch from the bottom."},
    {t:"14:00", b:"Rest at the hotel", p:""},
-   {t:"18:00", b:"Muay Thai at Rajadamnern Stadium", tag:"tobook", p:"Thailand's oldest boxing stadium, with fights every night. Mondays are usually Rajadamnern Knockout, about 7pm–9pm. Families are welcome. Book ringside or club-class seats ahead, as it can sell out. It's loud and the fights are real, so check the kids are happy with that. The grandparents may prefer a quiet night.", map:MAP("Rajadamnern Stadium Bangkok")}
+   {t:"18:00", b:"Muay Thai: Rajadamnern Knock Out", tag:"booked", p:"5 tickets booked for the 18:00–21:30 event at Rajadamnern Stadium, Thailand's oldest boxing ring. Club Class, Section 9, seats E36–E40 (all together). Each ticket has its own QR code to scan at the door: Cherry has them. No age restriction. It's loud and the fights are real, so check the kids are happy with that. Leave the hotel by about 17:00, as Monday traffic is slow.", map:MAP("Rajadamnern Stadium Bangkok"), links:[["Ticket details on the Travel tab"]]}
  ]},
 
  {date:"2026-11-24", city:"bkk", place:"Bangkok", title:"Loy Krathong night", sleep:"bkk", items:[
@@ -437,13 +437,13 @@ const DAYS = [
  ], tip:"<b>Weigh your bags tonight.</b> Tomorrow's AirAsia flight allows 20 kg checked + 7 kg carry-on each."},
 
  {date:"2026-11-29", city:"fly", place:"Hua Hin → Chiang Mai", title:"Fly north", sleep:"cm", items:[
-   {t:"Morning", b:"Last swim, then pack", p:"Ask reception for a late checkout. Otherwise leave bags with the concierge."},
+   {t:"Morning", b:"Last swim, then pack", p:"Bags packed before breakfast: the flight is early afternoon, so there's no need for a late checkout."},
    {t:"12:00", b:"Check out of the Hilton", p:""},
-   {t:"15:15", b:"Leave for Hua Hin Airport (HHQ)", tag:"tobook", p:"About 15 minutes away. Book a van for 9, or two Grab cars."},
-   {t:"17:15", b:"FD3901 Hua Hin → Chiang Mai", tag:"booked", p:"Thai AirAsia. Arrives 18:30. Meals pre-ordered (see Travel)."},
-   {t:"18:30", b:"Land at Chiang Mai, then to the hotel", tag:"tobook", p:"The airport is about 15 minutes from the Mövenpick. Pre-book a van or take two Grab XLs."},
-   {t:"~19:30", b:"Check in at the Mövenpick Suriwongse", p:"Daily breakfast. The Night Bazaar is right outside.", map:HOTEL.cm.map},
-   {t:"Late", b:"Sunday Walking Street", tag:"opt", p:"Chiang Mai's biggest market, every Sunday on Ratchadamnoen Road until about 10–11pm. Only if people still have energy.", map:MAP("Sunday Walking Street Chiang Mai")}
+   {t:"12:30", b:"Leave for Hua Hin Airport (HHQ)", tag:"tobook", p:"About 15 minutes away. Book a van for 9, or two Grab cars. Grab lunch at the hotel first or snacks for the airport: it's a small terminal."},
+   {t:"14:40", b:"FD3901 Hua Hin → Chiang Mai", tag:"booked", p:"Thai AirAsia. Arrives 15:55. Meals pre-ordered (see Travel)."},
+   {t:"15:55", b:"Land at Chiang Mai (Terminal 2), then to the hotel", tag:"tobook", p:"The airport is about 15 minutes from the Mövenpick. Pre-book a van or take two Grab XLs."},
+   {t:"~17:00", b:"Check in at the Mövenpick Suriwongse", p:"Daily breakfast. The Night Bazaar is right outside.", map:HOTEL.cm.map},
+   {t:"Evening", b:"Sunday Walking Street", tag:"opt", p:"Chiang Mai's biggest market, every Sunday on Ratchadamnoen Road until about 10–11pm. With the afternoon arrival there's time for dinner there.", map:MAP("Sunday Walking Street Chiang Mai")}
  ]},
 
  {date:"2026-11-30", city:"cm", place:"Chiang Mai", title:"Doi Suthep & the Old City", sleep:"cm", items:[
@@ -490,12 +490,12 @@ const DAYS = [
 
 const PEOPLE = [
   {group:"The Wards", members:[["andrew","Andrew Ward","46"],["cherry","Cherry Ward","46"],["dylan","Dylan Ward","15"]]},
-  {group:"Jamilar, Alan & kids", members:[["jamilar","Jamilar Aung","44"],["alan","Alan Abadiano","45"],["naima","Naima","12"],["ezra","Ezra","10"]]},
+  {group:"Jamilar, Allen & kids", members:[["jamilar","Jamilar Aung","44"],["alan","Allen Abadiano","45"],["naima","Naima","12"],["ezra","Ezra","10"]]},
   {group:"Grandparents", members:[["than","Than Aung","77"],["tintin","Tin Tin Win","77"]]}
 ];
 
 const TODOS = [
-  {id:"insurance", txt:"Travel insurance for all 9 travellers", sm:"Add policy details on the Contacts tab."},
+  {id:"insurance-others", txt:"Travel insurance for Jamilar's family and the grandparents", sm:"The Wards' policy is on the Contacts tab. Add the other two there."},
   {id:"passports", txt:"Check every passport has 6+ months left after 6 Dec 2026"},
   {id:"berkeley-cancel", txt:"Berkeley: free cancellation ends 17 Nov; card charged 16 Nov", due:"16 Nov"},
   {id:"klook-luggage", txt:"Ask the airport van operator about luggage for 9", sm:"Van takes about 8 standard suitcases. Message via the Klook app (ref on the Travel tab)."},
@@ -505,12 +505,11 @@ const TODOS = [
   {id:"money-sim", txt:"Sort cash, travel cards and phone data (eSIM or roaming)"},
   {id:"hilton-pay", txt:"Hilton payment charged; ask about Dylan's breakfast", sm:"The Hilton counts children 12+ as adults for breakfast.", due:"23 Nov"},
   {id:"loy-cruise", txt:"Book the Loy Krathong dinner cruise for 24 Nov", sm:"Special-night tickets usually can't be cancelled and sell out."},
-  {id:"muay-thai", txt:"Book Muay Thai tickets at Rajadamnern for Mon 23 Nov"},
+  {id:"muay-who", txt:"Decide which 5 are going to Muay Thai on 23 Nov", sm:"5 tickets booked (seats E36–E40). Buy more if others want to come."},
   {id:"hh-van-time", txt:"Confirm pickup time and hotel for the Hua Hin van (25 Nov)", sm:"Message TTD Global in the Klook app. Suggest about 10:30 at The Berkeley."},
-  {id:"hilton-late", txt:"Ask the Hilton for a late checkout on 29 Nov"},
   {id:"airasia-checkin", txt:"AirAsia web check-in for FD3901", due:"28 Nov"},
   {id:"hh-airport", txt:"Book Hilton → Hua Hin Airport on 29 Nov"},
-  {id:"cnx-arrive", txt:"Book Chiang Mai Airport → Mövenpick on 29 Nov (18:30 arrival)"},
+  {id:"cnx-arrive", txt:"Book Chiang Mai Airport → Mövenpick on 29 Nov (15:55 arrival)"},
   {id:"elephants", txt:"Book the elephant sanctuary for 1 Dec", sm:"Books out weeks ahead."},
   {id:"cooking", txt:"Book a family cooking class for 2 Dec"},
   {id:"inthanon", txt:"Book a driver for Doi Inthanon on 3 Dec"},
@@ -660,10 +659,10 @@ function renderTravel(){
   t.append(el("h2",{class:"sectiontitle",text:"Flights"}));
   t.append(flightCard({when:"Sat 21 Nov · all 9",title:"Qantas QF23",from:"SYD",to:"BKK",dep:"10:25",arr:"16:10",fromName:"Sydney T1",toName:"Bangkok Suvarnabhumi",dur:"9h 45m",
     rows:[{k:"Wards' booking",ref:"qf"},{k:"Others' booking",v:"Add in the notes on Day 1"},{k:"Checked bag",v:"Economy 30 kg (more for Qantas Gold/Silver members)"},{k:"Carry-on",v:"1 bag, 7 kg"}]}));
-  const seats=[["29A","Tin Tin","Nasi lemak"],["29B","Ezra","Chicken rice"],["29C","Than","Chicken rice"],["30A","Jamilar","Nasi lemak"],["30B","Naima","Chicken rice"],["30C","Alan","Chicken rice"],["30D","Cherry","Chicken rice"],["30E","Andrew","Nasi lemak"],["30F","Dylan","Chicken rice"]];
+  const seats=[["29A","Tin Tin","Nasi lemak"],["29B","Ezra","Chicken rice"],["29C","Than","Chicken rice"],["30A","Jamilar","Nasi lemak"],["30B","Naima","Chicken rice"],["30C","Allen","Chicken rice"],["30D","Cherry","Chicken rice"],["30E","Andrew","Nasi lemak"],["30F","Dylan","Chicken rice"]];
   const grid=el("div",{class:"seatgrid"}); seats.forEach(s=>grid.append(el("div",{class:"seat"}, el("b",{text:s[0]}), " ", s[1], el("div",{class:"small",text:s[2]}))));
-  t.append(flightCard({when:"Sun 29 Nov · all 9",title:"Thai AirAsia FD3901",from:"HHQ",to:"CNX",dep:"17:15",arr:"18:30",fromName:"Hua Hin",toName:"Chiang Mai",dur:"1h 15m",
-    rows:[{k:"Booking",ref:"airasia"},{k:"Booked by",v:"Jamilar"},{k:"Checked bag",v:"20 kg each (prepaid)"},{k:"Carry-on",v:"7 kg each"},{k:"Name check",v:"Alan is booked as ALLEN KHRISTIAN ABADIANO: make sure that matches his passport."}],
+  t.append(flightCard({when:"Sun 29 Nov · all 9",title:"Thai AirAsia FD3901",from:"HHQ",to:"CNX",dep:"14:40",arr:"15:55",fromName:"Hua Hin",toName:"Chiang Mai T2",dur:"1h 15m",
+    rows:[{k:"Booking",ref:"airasia"},{k:"Booked by",v:"Jamilar"},{k:"Checked bag",v:"20 kg each (prepaid)"},{k:"Carry-on",v:"7 kg each"}],
     extra:el("div",{}, el("div",{class:"kicker",style:"margin-top:10px",text:"Seats & pre-ordered meals"}), grid)}));
   t.append(flightCard({when:"Sat 5 Dec · all 9",title:"Thai Airways TG107",from:"CNX",to:"BKK",dep:"14:05",arr:"15:25",fromName:"Chiang Mai",toName:"Bangkok Suvarnabhumi",dur:"1h 20m",
     rows:[{k:"Booking",ref:"D4HDDC"},{k:"Note",v:"Same ticket as QF24. Ask for bags to be checked through to Sydney."}]}));
@@ -687,6 +686,15 @@ function renderTravel(){
     {k:"Rooms",v:"4 × Classic King, daily breakfast, for all 9 (booked by Jamilar via Luxury Escapes)"},
     {k:"Main booking",ref:"movenpick"},{k:"Room bookings",ref:"movenpickRooms",nocopy:true}]}));
 
+  t.append(el("h2",{class:"sectiontitle",text:"Tickets"}));
+  const mt=el("div",{class:"card"}, el("div",{class:"kicker",text:"Mon 23 Nov · booked"}), el("h3",{text:"Rajadamnern Knock Out Muay Thai"}));
+  const dlm=el("dl",{class:"kv"});
+  [["When","18:00–21:30"],["Where","Rajadamnern Stadium, Bangkok"],["Tickets","5 × Club Class, Section 9"],["Seats","E36, E37, E38, E39, E40"]].forEach(r=>dlm.append(el("dt",{text:r[0]}),el("dd",{text:r[1]})));
+  dlm.append(...refRow("Order no.","muayThai"));
+  dlm.append(...refRow("Entry codes","muayThaiCodes",true));
+  dlm.append(el("dt",{text:"Entry"}),el("dd",{text:"Each ticket has a QR code scanned at the door. Cherry has all five on her phone."}));
+  mt.append(dlm); t.append(mt);
+
   t.append(el("h2",{class:"sectiontitle",text:"Transfers"}));
   const tr=el("div",{class:"card"}, el("div",{class:"kicker",text:"Sat 21 Nov · booked"}), el("h3",{text:"Airport → The Berkeley"}));
   const dl=el("dl",{class:"kv"});
@@ -698,7 +706,7 @@ function renderTravel(){
   dl2.append(...refRow("Klook booking","klookHuaHin"));
   [["Operator","TTD Global"],["Vehicle","Van, group of up to 9"],["Lead name","Jamilar"],["Pickup","Bangkok downtown. Time not set yet: confirm about 10:30 at The Berkeley in the Klook app"],["Drop-off","Hilton Hua Hin"],["Cancel","Free until 24 Nov (Bangkok time)"]].forEach(r=>dl2.append(el("dt",{text:r[0]}),el("dd",{text:r[1]})));
   hh.append(dl2); t.append(hh);
-  [["Sun 29 Nov","Hilton → Hua Hin Airport","About 15 minutes. Leave around 15:15."],["Sun 29 Nov","Chiang Mai Airport → Mövenpick","About 15 minutes. Land 18:30."],["Sat 5 Dec","Mövenpick → Chiang Mai Airport","About 15 minutes. Leave around 11:45."]].forEach(r=>{
+  [["Sun 29 Nov","Hilton → Hua Hin Airport","About 15 minutes. Leave around 12:30 for the 14:40 flight."],["Sun 29 Nov","Chiang Mai Airport → Mövenpick","About 15 minutes. Land 15:55 at Terminal 2."],["Sat 5 Dec","Mövenpick → Chiang Mai Airport","About 15 minutes. Leave around 11:45."]].forEach(r=>{
     t.append(el("div",{class:"card"}, el("div",{class:"kicker",html:`${r[0]} · <span style="color:var(--warn)">to book</span>`}), el("h3",{text:r[1]}), el("p",{class:"small",style:"margin:4px 0 0",text:r[2]})));
   });
 }
@@ -759,7 +767,7 @@ function renderPeople(){
     const inp=el("input",{id:"ins-"+key,placeholder:"Insurer, policy no., 24h number","aria-label":"Insurance for "+g.group,value:v,style:"width:100%;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:8px;padding:8px;font:inherit;font-size:.9rem;margin-top:4px"});
     inp.disabled=!state.canWrite;
     inp.addEventListener("change",()=>setIns(key,inp.value.trim()));
-    ins.append(el("div",{style:"margin-bottom:10px"}, el("div",{class:"kicker",text:g.group}), inp));
+    ins.append(el("div",{style:"margin-bottom:10px"}, el("div",{class:"kicker",text:g.group}), v?el("p",{class:"small",style:"margin:4px 0 2px;user-select:text",text:v}):null, inp));
   });
 }
 
