@@ -401,7 +401,7 @@ const DAYS = [
    {t:"11:00", b:"Wat Pho (Reclining Buddha)", p:"A short walk south. Shady and calmer than the Palace."},
    {t:"12:00", b:"Ferry across to Wat Arun", tag:"opt", p:"The cross-river ferry from Tha Tien pier takes a few minutes. Steep steps at Wat Arun, so the grandparents may prefer to watch from the bottom."},
    {t:"14:00", b:"Rest at the hotel", p:""},
-   {t:"18:00", b:"Muay Thai: Rajadamnern Knock Out", tag:"booked", p:"5 tickets booked for the 18:00–21:30 event at Rajadamnern Stadium, Thailand's oldest boxing ring. Club Class, Section 9, seats E36–E40 (all together). Each ticket has its own QR code to scan at the door: Cherry has them. No age restriction. It's loud and the fights are real, so check the kids are happy with that. Leave the hotel by about 17:00, as Monday traffic is slow.", map:MAP("Rajadamnern Stadium Bangkok"), links:[["Ticket details on the Travel tab"]]}
+   {t:"18:00", b:"Muay Thai: Rajadamnern Knock Out", tag:"booked", p:"Andrew, Cherry, Dylan, Allen and Jamilar are going. 5 tickets booked for the 18:00–21:30 event at Rajadamnern Stadium, Thailand's oldest boxing ring. Club Class, Section 9, seats E36–E40 (all together). Each ticket has its own QR code to scan at the door: Cherry has them. Leave the hotel by about 17:00, as Monday traffic is slow.", map:MAP("Rajadamnern Stadium Bangkok"), links:[["Ticket details on the Travel tab"]]}
  ]},
 
  {date:"2026-11-24", city:"bkk", place:"Bangkok", title:"Loy Krathong night", sleep:"bkk", items:[
@@ -505,7 +505,6 @@ const TODOS = [
   {id:"money-sim", txt:"Sort cash, travel cards and phone data (eSIM or roaming)"},
   {id:"hilton-pay", txt:"Hilton payment charged; ask about Dylan's breakfast", sm:"The Hilton counts children 12+ as adults for breakfast.", due:"23 Nov"},
   {id:"loy-cruise", txt:"Book the Loy Krathong dinner cruise for 24 Nov", sm:"Special-night tickets usually can't be cancelled and sell out."},
-  {id:"muay-who", txt:"Decide which 5 are going to Muay Thai on 23 Nov", sm:"5 tickets booked (seats E36–E40). Buy more if others want to come."},
   {id:"hh-van-time", txt:"Confirm pickup time and hotel for the Hua Hin van (25 Nov)", sm:"Message TTD Global in the Klook app. Suggest about 10:30 at The Berkeley."},
   {id:"airasia-checkin", txt:"AirAsia web check-in for FD3901", due:"28 Nov"},
   {id:"hh-airport", txt:"Book Hilton → Hua Hin Airport on 29 Nov"},
@@ -689,7 +688,7 @@ function renderTravel(){
   t.append(el("h2",{class:"sectiontitle",text:"Tickets"}));
   const mt=el("div",{class:"card"}, el("div",{class:"kicker",text:"Mon 23 Nov · booked"}), el("h3",{text:"Rajadamnern Knock Out Muay Thai"}));
   const dlm=el("dl",{class:"kv"});
-  [["When","18:00–21:30"],["Where","Rajadamnern Stadium, Bangkok"],["Tickets","5 × Club Class, Section 9"],["Seats","E36, E37, E38, E39, E40"]].forEach(r=>dlm.append(el("dt",{text:r[0]}),el("dd",{text:r[1]})));
+  [["When","18:00–21:30"],["Where","Rajadamnern Stadium, Bangkok"],["Who","Andrew, Cherry, Dylan, Allen, Jamilar"],["Tickets","5 × Club Class, Section 9"],["Seats","E36, E37, E38, E39, E40"]].forEach(r=>dlm.append(el("dt",{text:r[0]}),el("dd",{text:r[1]})));
   dlm.append(...refRow("Order no.","muayThai"));
   dlm.append(...refRow("Entry codes","muayThaiCodes",true));
   dlm.append(el("dt",{text:"Entry"}),el("dd",{text:"Each ticket has a QR code scanned at the door. Cherry has all five on her phone."}));
