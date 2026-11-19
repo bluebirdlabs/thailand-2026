@@ -501,7 +501,7 @@ const TODOS = [
   {id:"berkeley-cancel", txt:"Berkeley: free cancellation ends 17 Nov; card charged 16 Nov", due:"16 Nov"},
   {id:"klook-luggage", txt:"Ask the airport van operator about luggage for 9", sm:"Van takes about 8 standard suitcases. Message via the Klook app (ref on the Travel tab)."},
   {id:"other-rooms", txt:"Confirm the other groups' rooms at The Berkeley and the Hilton", sm:"The confirmations shared so far only cover the Wards' rooms in Bangkok and Hua Hin."},
-  {id:"tdac", txt:"Everyone submits their Thailand Digital Arrival Card", sm:"tdac.immigration.go.th, free. Only opens 3 days before arrival.", due:"18–21 Nov"},
+  {id:"tdac-others", txt:"Jamilar's family and the grandparents submit their Thailand Digital Arrival Cards", sm:"The Wards are done (see the Travel tab). tdac.immigration.go.th, free. Address: The Berkeley, 559 Ratchaprarop Road, Makkasan, Ratchathewi, Bangkok 10400.", due:"by 21 Nov"},
   {id:"qf-checkin", txt:"Qantas online check-in for QF23", due:"20 Nov"},
   {id:"money-sim", txt:"Sort cash, travel cards and phone data (eSIM or roaming)"},
   {id:"hilton-pay", txt:"Hilton payment charged; ask about Dylan's breakfast", sm:"The Hilton counts children 12+ as adults for breakfast.", due:"23 Nov"},
@@ -685,6 +685,17 @@ function renderTravel(){
     {k:"Address",v:"110 Changklan Rd, Chiang Mai"},{k:"Phone",v:"+66 53 270 051"},
     {k:"Rooms",v:"4 × Classic King, daily breakfast, for all 9 (booked by Jamilar via Luxury Escapes)"},
     {k:"Main booking",ref:"movenpick"},{k:"Room bookings",ref:"movenpickRooms",nocopy:true}]}));
+
+  t.append(el("h2",{class:"sectiontitle",text:"Arrival cards (TDAC)"}));
+  const td=el("div",{class:"card"}, el("div",{class:"kicker",text:"Sat 21 Nov · needed at Bangkok immigration"}), el("h3",{text:"Thailand Digital Arrival Card"}));
+  const dlt=el("dl",{class:"kv"});
+  dlt.append(el("dt",{text:"The Wards"}),el("dd",{text:"Done 19 Nov (arriving QF23)"}));
+  dlt.append(...refRow("Cherry","tdacCherry"));
+  dlt.append(...refRow("Andrew","tdacAndrew"));
+  dlt.append(...refRow("Dylan","tdacDylan"));
+  [["Jamilar, Allen & kids","To do: one card each, by 21 Nov"],["Grandparents","To do: one card each, by 21 Nov"],["Address to use","The Berkeley, 559 Ratchaprarop Road, Makkasan, Ratchathewi, Bangkok 10400"],["Flights to enter","Arrive QF23 on 21 Nov; depart on 5 Dec"],["At immigration","Show each person's QR code from the confirmation PDF or email. Keep a screenshot on your own phone."]].forEach(r=>dlt.append(el("dt",{text:r[0]}),el("dd",{text:r[1]})));
+  td.append(dlt, el("p",{class:"small",style:"margin:8px 0 0"}, el("a",{href:"https://tdac.immigration.go.th/arrival-card",target:"_blank",rel:"noopener",text:"Fill in or update a card (official site, free)"})));
+  t.append(td);
 
   t.append(el("h2",{class:"sectiontitle",text:"Tickets"}));
   const mt=el("div",{class:"card"}, el("div",{class:"kicker",text:"Mon 23 Nov · booked"}), el("h3",{text:"Rajadamnern Knock Out Muay Thai"}));
