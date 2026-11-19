@@ -413,7 +413,7 @@ const DAYS = [
 
  {date:"2026-11-25", city:"fly", place:"Bangkok → Hua Hin", title:"Road trip to the beach", sleep:"hh", items:[
    {t:"Morning", b:"Breakfast and check out of The Berkeley", p:"Checkout before 12:00."},
-   {t:"~10:30", b:"Private van to Hua Hin", tag:"booked", p:"TTD Global via Klook, van for 9, booked by Jamilar. About 3–4 hours. The booking shows no pickup time yet: confirm the time and The Berkeley as the pickup in the Klook app. Free cancellation until 24 Nov.", links:[["Booking ref on the Travel tab"]]},
+   {t:"11:00", b:"Private van to Hua Hin", tag:"booked", p:"Pickup confirmed for 11:00 at The Berkeley: be in the lobby, checked out, by 10:50. The driver waits up to 30 minutes. TTD Global via Klook, van for 9 with 8 bags, booked by Jamilar. About 3–4 hours to the Hilton; toilet stops are free. Free cancellation until 24 Nov.", links:[["Booking ref on the Travel tab"]]},
    {t:"15:00", b:"Check in at the Hilton Hua Hin", p:"Twin Premium Ocean View. Breakfast included.", map:HOTEL.hh.map},
    {t:"18:00", b:"Hua Hin Night Market", p:"A short walk from the Hilton. Seafood, snacks and souvenirs.", map:MAP("Hua Hin Night Market")}
  ]},
@@ -506,7 +506,7 @@ const TODOS = [
   {id:"money-sim", txt:"Sort cash, travel cards and phone data (eSIM or roaming)"},
   {id:"hilton-pay", txt:"Hilton payment charged; ask about Dylan's breakfast", sm:"The Hilton counts children 12+ as adults for breakfast.", due:"23 Nov"},
   {id:"loy-cruise", txt:"Book the Loy Krathong dinner cruise for 24 Nov", sm:"Special-night tickets usually can't be cancelled and sell out."},
-  {id:"hh-van-time", txt:"Confirm pickup time and hotel for the Hua Hin van (25 Nov)", sm:"Message TTD Global in the Klook app. Suggest about 10:30 at The Berkeley."},
+  {id:"hh-van-bags", txt:"Check the Hua Hin van can take all our bags (25 Nov)", sm:"Booked with 8 luggage items for 9 people. If we have more, message TTD Global on WhatsApp before the day."},
   {id:"airasia-checkin", txt:"AirAsia web check-in for FD3901", due:"28 Nov"},
   {id:"hh-airport", txt:"Book Hilton → Hua Hin Airport on 29 Nov"},
   {id:"cnx-arrive", txt:"Book Chiang Mai Airport → Mövenpick on 29 Nov (15:55 arrival)"},
@@ -713,7 +713,7 @@ function renderTravel(){
   const hh=el("div",{class:"card"}, el("div",{class:"kicker",text:"Wed 25 Nov · booked"}), el("h3",{text:"The Berkeley → Hua Hin"}));
   const dl2=el("dl",{class:"kv"});
   dl2.append(...refRow("Klook booking","klookHuaHin"));
-  [["Operator","TTD Global"],["Vehicle","Van, group of up to 9"],["Lead name","Jamilar"],["Pickup","Bangkok downtown. Time not set yet: confirm about 10:30 at The Berkeley in the Klook app"],["Drop-off","Hilton Hua Hin"],["Cancel","Free until 24 Nov (Bangkok time)"]].forEach(r=>dl2.append(el("dt",{text:r[0]}),el("dd",{text:r[1]})));
+  [["Operator","TTD Global, +66 2 114 8844, WhatsApp +66 99 483 8455"],["Vehicle","Van for 9 people, 8 luggage items booked"],["Lead name","Jamilar (she shows the mobile voucher)"],["Pickup","11:00, The Berkeley lobby. Be there by 10:50; the driver waits up to 30 minutes"],["Drop-off","Hilton Hua Hin, 33 Naresdamri Rd"],["Extras","Extra waiting THB 300 an hour, cash to the driver. Tolls and fuel included; tips are not"],["Cancel","Free until 24 Nov (Bangkok time)"]].forEach(r=>dl2.append(el("dt",{text:r[0]}),el("dd",{text:r[1]})));
   hh.append(dl2); t.append(hh);
   [["Sun 29 Nov","Hilton → Hua Hin Airport","About 15 minutes. Leave around 12:30 for the 14:40 flight."],["Sun 29 Nov","Chiang Mai Airport → Mövenpick","About 15 minutes. Land 15:55 at Terminal 2."],["Sat 5 Dec","Mövenpick → Chiang Mai Airport","About 15 minutes. Leave around 11:45."]].forEach(r=>{
     t.append(el("div",{class:"card"}, el("div",{class:"kicker",html:`${r[0]} · <span style="color:var(--warn)">to book</span>`}), el("h3",{text:r[1]}), el("p",{class:"small",style:"margin:4px 0 0",text:r[2]})));
