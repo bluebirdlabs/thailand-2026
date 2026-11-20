@@ -202,6 +202,11 @@ dl.kv dd{margin:0;font-weight:500;overflow-wrap:anywhere}
 ul.plain{margin:6px 0 0;padding-left:18px;font-size:.92rem}
 ul.plain li{margin:4px 0}
 .small{font-size:.82rem;color:var(--muted)}
+.phr-h{font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:14px 0 2px}
+.phr{display:grid;grid-template-columns:1fr auto;gap:2px 10px;align-items:center;width:100%;text-align:left;background:none;border:0;border-top:1px solid var(--line);padding:8px 0;font:inherit;color:inherit;cursor:pointer}
+.phr .en{font-size:.82rem;color:var(--muted)}
+.phr .ro{font-weight:600}
+.phr .th{font-size:1.15rem;grid-row:1 / span 2;grid-column:2;text-align:right}
 .toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:8px 14px;border-radius:999px;font-size:.85rem;opacity:0;pointer-events:none;transition:opacity .2s;z-index:40}
 .toast.show{opacity:1}
 .gate{position:fixed;inset:0;z-index:50;background:var(--brand);display:grid;place-items:center;padding:20px}
@@ -325,6 +330,12 @@ ul.plain li{margin:4px 0}
           <li><b>Time:</b> Thailand is 3 hours behind Brisbane and 4 hours behind Sydney (daylight saving).</li>
           <li><b>5 Dec</b> is a national public holiday (King Bhumibol's birthday, Father's Day). Some offices close; airports run as normal.</li>
         </ul>
+      </div>
+
+      <div class="card">
+        <h2>Thai phrases</h2>
+        <p class="small" style="margin:4px 0 0">End a sentence with <b>khrap</b> if you're male or <b>kha</b> if you're female to be polite: "sa-wat-dee khrap". Tap a phrase to hear it, or show the Thai writing to the person you're talking to.</p>
+        <div id="phrases"></div>
       </div>
 
       <div class="card">
@@ -781,6 +792,44 @@ function renderPeople(){
 }
 
 
+
+/* ---------------- Thai phrases ---------------- */
+const PHRASES = [
+ ["Basics",[
+  ["Hello / goodbye","sa-wat-dee","สวัสดี"],["Thank you","khop-khun","ขอบคุณ"],["Yes","chai","ใช่"],["No","mai chai","ไม่ใช่"],
+  ["Sorry / excuse me","khor-thot","ขอโทษ"],["No worries","mai pen rai","ไม่เป็นไร"],["I don't understand","mai khao-jai","ไม่เข้าใจ"],
+  ["Can you speak English?","phoot ang-grit dai mai","พูดภาษาอังกฤษได้ไหม"]]],
+ ["Eating",[
+  ["Not spicy","mai phet","ไม่เผ็ด"],["A little spicy","phet nit noi","เผ็ดนิดหน่อย"],["Delicious","a-roi","อร่อย"],
+  ["Plain water","nam plao","น้ำเปล่า"],["No ice","mai sai nam khaeng","ไม่ใส่น้ำแข็ง"],["No peanuts","mai sai thua","ไม่ใส่ถั่ว"],
+  ["The bill, please","check bin","เช็คบิล"]]],
+ ["Shopping",[
+  ["How much?","thao-rai","เท่าไหร่"],["Too expensive","phaeng pai","แพงไป"],["Can you go lower?","lot dai mai","ลดได้ไหม"],
+  ["I'll take this one","ao an nee","เอาอันนี้"],["No thanks (don't want it)","mai ao","ไม่เอา"]]],
+ ["Getting around",[
+  ["Where is the toilet?","hong nam yoo tee nai","ห้องน้ำอยู่ที่ไหน"],["Go to …","pai …","ไป"],["Stop here","jot tee nee","จอดที่นี่"],
+  ["Please use the meter","pert meter duay","เปิดมิเตอร์ด้วย"],["Turn left","liao sai","เลี้ยวซ้าย"],["Turn right","liao khwa","เลี้ยวขวา"],["Straight ahead","trong pai","ตรงไป"]]],
+ ["If you need help",[
+  ["Help!","chuay duay","ช่วยด้วย"],["I need a doctor","tong-gan mor","ต้องการหมอ"],["Hospital","rong pha-ya-ban","โรงพยาบาล"],["I'm lost","long thang","หลงทาง"]]],
+ ["Numbers",[
+  ["1","neung","หนึ่ง"],["2","song","สอง"],["3","sam","สาม"],["4","see","สี่"],["5","ha","ห้า"],["6","hok","หก"],["7","jet","เจ็ด"],["8","paet","แปด"],["9","gao","เก้า"],["10","sip","สิบ"],
+  ["20","yee-sip","ยี่สิบ"],["100","neung roi","หนึ่งร้อย"],["1,000","neung phan","หนึ่งพัน"]]]
+];
+function sayThai(txt){
+  try{ if(!("speechSynthesis" in window)) return; const u=new SpeechSynthesisUtterance(txt); u.lang="th-TH"; u.rate=.8; speechSynthesis.cancel(); speechSynthesis.speak(u); }catch(e){}
+}
+function renderPhrases(){
+  const box=$("#phrases"); if(!box) return; box.textContent="";
+  PHRASES.forEach(g=>{
+    box.append(el("div",{class:"phr-h",text:g[0]}));
+    g[1].forEach(r=>{
+      const b=el("button",{type:"button",class:"phr","aria-label":r[0]+": "+r[1]}, el("span",{class:"ro",text:r[1]}), el("span",{class:"th",lang:"th",text:r[2]}), el("span",{class:"en",text:r[0]}));
+      b.addEventListener("click",()=>sayThai(r[2]));
+      box.append(b);
+    });
+  });
+}
+
 /* ---------------- Writes ---------------- */
 function cacheRows(){ lsSet("trip.cache",[...rows.values()]); }
 async function save(kind,id,data){
@@ -896,7 +945,7 @@ window.addEventListener("offline",()=>{ state.online=false; setSync(); });
 
 // first paint from the last saved copy, then connect
 (lsGet("trip.cache",[])||[]).forEach(r=>rows.set(rkey(r),r)); applyRows();
-renderCountdown(); renderStrip(); renderDays(); renderTravel(); infoSig=JSON.stringify(state.info); renderAll(); setSync("Connecting…");
+renderCountdown(); renderStrip(); renderDays(); renderTravel(); renderPhrases(); infoSig=JSON.stringify(state.info); renderAll(); setSync("Connecting…");
 { const h=location.hash.slice(1); if(TABS.includes(h)) showTab(h,false); else scrollToToday(false); }
 (async function(){
   if(!window.supabase){ setSync("Can't load. Check your internet and refresh."); return; }
